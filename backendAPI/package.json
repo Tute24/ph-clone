@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npx tsc"
+    "build": "npx tsc",
+    "mon": "nodemon app.ts"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +21,7 @@
     "nodemon": "^3.1.7"
   },
   "devDependencies": {
+    "ts-node": "^10.9.2",
     "typescript": "^5.6.3"
   }
 }

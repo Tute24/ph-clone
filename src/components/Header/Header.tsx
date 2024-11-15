@@ -11,7 +11,7 @@ export default async function Header (){
             <nav className='flex flex-row items-center justify-between'>
                 <Link href='/'><button type="button" className="p-2">Home Page</button></Link>
                 <input type="text" className="solid border-black border-2" placeholder="Search right here"/>
-                <button type="button" className="p-2">New Product</button>
+                <Link href='/NewProduct'><button type="button" className="p-2">New Product</button></Link>
                 <button type="button" className='p-2'>About</button>
                 <SignedOut>
                     <SignInButton><button className='p-2'>Sign In!</button></SignInButton>

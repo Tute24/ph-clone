@@ -1,11 +1,7 @@
-import { SignedOut, SignInButton } from "@clerk/clerk-react"
-import { SignedIn } from "@clerk/nextjs"
-
-export default async function ProductForm(){
+export default function ProductForm(){
 
     return (
         <>
-            <SignedIn>
                 <h2>
                     Add a new product to the site's products list:
                 </h2>
@@ -29,12 +25,7 @@ export default async function ProductForm(){
                     <button type="submit">
                         Add new product
                     </button>
-                </form>
-            </SignedIn>
-            <SignedOut>
-                <h2>You must be logged in to add a new product.</h2>
-                <SignInButton mode="modal"></SignInButton>
-            </SignedOut>
+                </form>      
         </>
     )
 }

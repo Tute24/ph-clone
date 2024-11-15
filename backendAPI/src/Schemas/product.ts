@@ -9,6 +9,10 @@ const productSchema: Schema = new mongoose.Schema({
         type: String,
         required:true
     },
+    productUrl:{
+        type: String,
+        required: true
+    },
     upVotes:{
         type: Number,
         default:0,

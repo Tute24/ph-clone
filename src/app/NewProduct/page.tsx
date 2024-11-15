@@ -3,7 +3,7 @@
 import ProductForm from "@/components/ProductForm/ProductForm";
 import { useContextWrap } from "@/contexts/ContextWrap";
 import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
-
+import axios from "axios";
 
 export default function NewProduct(){
 
@@ -22,7 +22,7 @@ export default function NewProduct(){
         e.preventDefault()
         
         try{
-            
+            const response = await axios.post('/newProduct', productInfos)
         } catch(error){
             console.log(error)
         }

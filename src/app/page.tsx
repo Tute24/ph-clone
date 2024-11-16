@@ -3,7 +3,7 @@ import axios from "axios"
 export default async function HomePage(){
 
     try{
-        const response = await axios.get('/productsList')
+        const response = await axios.get('http://localhost:3000/productsList')
     }catch(error){
 
     }

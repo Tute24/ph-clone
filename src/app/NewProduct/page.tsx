@@ -22,7 +22,8 @@ export default function NewProduct(){
         e.preventDefault()
         
         try{
-            const response = await axios.post('/newProduct', productInfos)
+            const response = await axios.post('http://localhost:3000/newProduct', productInfos)
+            console.log(productInfos)
         } catch(error){
             console.log(error)
         }

@@ -5,11 +5,14 @@ import Product from '../Schemas/product'
 productsListRouter.get('/productsList', async (req: Request,res:Response):Promise<any>=>{
 
     try{
-        const usersList: string[] = await Product.find({}, 'productName, description, productUrl, upVotes, tags')
-        if(usersList){
-            return res.json({message:'Fetched successfully.', users: usersList})
+        const productsList: string[] = await Product.find({}, 'productName description productUrl upVotes tags')
+        if(productsList){
+            return res.json({message:'Fetched successfully.', products: productsList})
         }
+
     }catch(error){
         return res.status(500).json({message: 'Error'})
     }
 })
+
+export default productsListRouter

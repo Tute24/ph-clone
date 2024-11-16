@@ -15,7 +15,7 @@ newProductRouter.post('/newProduct', async (req: Request, res: Response): Promis
             })
              await newProduct.save()
 
-
+             return res.json({message: 'Success!'})
 
         }catch(error){
             return res.json({message: 'Error'})

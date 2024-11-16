@@ -4,10 +4,12 @@ import ProductForm from "@/components/ProductForm/ProductForm";
 import { useContextWrap } from "@/contexts/ContextWrap";
 import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import axios from "axios";
+import { useState } from "react";
 
 export default function NewProduct(){
 
     const {productInfos,setProductInfos} = useContextWrap()
+    const {statusMessage,setStatusMessage} = useContextWrap()
 
     function handleInputChange(e:any){
         setProductInfos(
@@ -23,9 +25,13 @@ export default function NewProduct(){
         
         try{
             const response = await axios.post('http://localhost:3000/newProduct', productInfos)
-            console.log(productInfos)
+            if(response){
+                console.log(productInfos)
+                setStatusMessage('Product added successfully!')
+            }
         } catch(error){
             console.log(error)
+            setStatusMessage(`Couldn't add the product.`)
         }
     }
     

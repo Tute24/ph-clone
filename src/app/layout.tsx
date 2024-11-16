@@ -4,6 +4,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import Header from "@/components/Header/Header";
 import { ContextWrapProvider } from "@/contexts/ContextWrap";
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",

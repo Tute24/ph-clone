@@ -22,7 +22,7 @@ export default function HomePage(){
                         productUrl: string,
                         tags:string[],
                         upVotes: number
-                    } ) => e.tags.flatMap(tag => tag.split(/[,]+/)))
+                    } ) => e.tags.flatMap(tag => tag.split(/,\s*/)))
                     console.log(tagsFetch)
                     console.log(productsData)
                     setProductsArray(productsData)
@@ -62,7 +62,7 @@ export default function HomePage(){
                                 </div >
                                 <div className="text-xs p-2 flex flex-row gap-2">
 
-                                    {e.tags.flatMap(tag => tag.split(/[,]+/)).map((item, index) =>(
+                                    {e.tags.flatMap(tag => tag.split(/,\s*/)).map((item, index) =>(
                                              <span className="underline" key={`${e._id}-${index}`}>{item}</span>
                                         ))}
                                 </div>

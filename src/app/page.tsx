@@ -10,6 +10,7 @@ export default function HomePage(){
 
     const [productsArray, setProductsArray] = useState([])
     const [tagsArray, setTagsArray] = useState<string[]>([])
+    const [upVoteProduct, setUpVoteProduct] = useState<string>('')
 
     useEffect(()=>{
         async function fetchProducts(){
@@ -41,8 +42,16 @@ export default function HomePage(){
     fetchProducts()
 },[])
 
-    async function voteUp(){
+    function idVote(e:any){
+        setUpVoteProduct(e.target.id)
+    }
 
+    async function voteUp(){
+            try{
+                const response = await axios.post('http://localhost:3000/upVote',upVoteProduct)
+            } catch(error){
+                console.log(error)
+            }
     }
 
     
@@ -65,15 +74,21 @@ export default function HomePage(){
                                 <li key={e._id} className="flex flex-col justify-center border-solid border-2 shadow-md rounded-lg hover:shadow-lg" >
                                     <h2 className="font-bold p-2">{e.productName}</h2>
                                     <div className="flex flex-row justify-evenly items-center ">
+                                        
                                         <p >About: {e.description}</p>
                                         <Link href={e.productUrl} target="blank" className="  text-orange-500 hover:underline ">Official Website</Link>
                                         <SignedOut>
                                             <SignInButton mode="modal">
-                                                <button className="p-0" type="button" ><img className="h-5 w-5 p-0" src="/upArrow.png" alt="upVote" /><span>{e.upVotes}</span></button>
+                                                <button className="px-2 border-solid border-2 border-gray-200 rounded-md" type="button" >
+                                                    <img className="h-5 w-5 p-0" src="/upArrow.png" alt="upVote" />
+                                                    <span>
+                                                        {e.upVotes}
+                                                    </span>
+                                                </button>
                                             </SignInButton>
                                         </SignedOut>
                                         <SignedIn>
-                                            <button className="p-0" type="button" onClick={voteUp}><img className="h-5 w-5 p-0" src="/upArrow.png" alt="upVote" /><span>{e.upVotes}</span></button>
+                                            <button id={e._id} className="px-2 border-solid border-2 border-gray-200 rounded-md" type="button" onClick={()=>{idVote;voteUp}}><img className="h-5 w-5 p-0" src="/upArrow.png" alt="upVote" /><span>{e.upVotes}</span></button>
                                         </SignedIn>
                                     </div >
                                     <div className="text-xs text-orange-500 p-2 flex flex-row gap-2">

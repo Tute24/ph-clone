@@ -18,7 +18,8 @@ export default async function Header (){
                     <SignUpButton><button className='p-2'>Register!</button></SignUpButton>
                 </SignedOut>
                 <SignedIn>
-                    <UserButton><h2 className='p-2'>Welcome, {username}!</h2></UserButton>
+                    <h2 className='p-2'>Welcome, {username}!</h2>
+                    <UserButton></UserButton>
                 </SignedIn>
             </nav>
         </>

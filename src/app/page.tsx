@@ -97,7 +97,7 @@ export default function HomePage(){
                                 }); e.upVotes++
                             }} className="px-2 border-solid border-2 border-gray-200 rounded-md" type="button">
                                                 <img className="h-5 w-5 p-0" src="/upArrow.png" alt="upVote" />
-                                                <span>
+                                                <span className="text-orange-500">
                                                     {e.upVotes}
                                                 </span>
                                             </button>

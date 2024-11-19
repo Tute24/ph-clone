@@ -1,5 +1,6 @@
 'use client'
 
+import { useContextWrap } from "@/contexts/ContextWrap"
 import { SignedOut, SignInButton } from "@clerk/clerk-react"
 import { SignedIn } from "@clerk/nextjs"
 import axios from "axios"
@@ -7,9 +8,8 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 
 export default function HomePage(){
-
+    const {tagsArray, setTagsArray} = useContextWrap()
     const [productsArray, setProductsArray] = useState([])
-    const [tagsArray, setTagsArray] = useState<string[]>([])
     const [mouseOverProduct,setMouseOverProduct] = useState<string>('')
     const [upVoteProduct, setUpVoteProduct] = useState({
         product: ''

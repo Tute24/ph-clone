@@ -10,7 +10,10 @@ export default function HomePage(){
 
     const [productsArray, setProductsArray] = useState([])
     const [tagsArray, setTagsArray] = useState<string[]>([])
-    const [upVoteProduct, setUpVoteProduct] = useState<string>('')
+    const [mouseOverProduct,setMouseOverProduct] = useState<string>('')
+    const [upVoteProduct, setUpVoteProduct] = useState({
+        product: ''
+    })
 
     useEffect(()=>{
         async function fetchProducts(){
@@ -42,17 +45,28 @@ export default function HomePage(){
     fetchProducts()
 },[])
 
-    function idVote(e:any){
-        setUpVoteProduct(e.target.id)
-    }
-
-    async function voteUp(){
+    useEffect(()=>{
+         async function voteUp(){
+            console.log(upVoteProduct)
             try{
                 const response = await axios.post('http://localhost:3000/upVote',upVoteProduct)
-            } catch(error){
-                console.log(error)
+            }catch(error){
+
             }
+            
     }
+    voteUp()
+    },[upVoteProduct])
+
+    async function upVote (){
+        try{
+        const response = await axios.post('http://localhost:3000/upVote',upVoteProduct)
+    } catch(error){
+        console.log(error)
+    }
+}
+
+    
 
     
 
@@ -70,7 +84,7 @@ export default function HomePage(){
                         tags:string[],
                         upVotes: number
                     }) => (
-                            <div key={e._id} className="p-5 border-gray-400 w-3/5">
+                            <div id={e.productName}  key={e._id} className="p-5 border-gray-400 w-3/5">
                                 <li key={e._id} className="flex flex-col justify-center border-solid border-2 shadow-md rounded-lg hover:shadow-lg" >
                                     <h2 className="font-bold p-2">{e.productName}</h2>
                                     <div className="flex flex-row justify-evenly items-center ">
@@ -88,7 +102,17 @@ export default function HomePage(){
                                             </SignInButton>
                                         </SignedOut>
                                         <SignedIn>
-                                            <button id={e._id} className="px-2 border-solid border-2 border-gray-200 rounded-md" type="button" onClick={()=>{idVote;voteUp}}><img className="h-5 w-5 p-0" src="/upArrow.png" alt="upVote" /><span>{e.upVotes}</span></button>
+                                            <input type="hidden" name="product" value={e._id} />
+                                            <button onClick={()=>{
+                                setUpVoteProduct({
+                                    product: e._id
+                                })
+                            }} className="px-2 border-solid border-2 border-gray-200 rounded-md" type="button">
+                                                <img className="h-5 w-5 p-0" src="/upArrow.png" alt="upVote" />
+                                                <span>
+                                                    {e.upVotes}
+                                                </span>
+                                            </button>
                                         </SignedIn>
                                     </div >
                                     <div className="text-xs text-orange-500 p-2 flex flex-row gap-2">

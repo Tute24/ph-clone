@@ -14,6 +14,8 @@ upVoteRouter.post('/upVote',async(req: Request,res: Response):Promise<any>=>{
             upVotedProduct.upVotes = Number(upVotedProduct.upVotes) +1
             await upVotedProduct.save()
             console.log(upVotedProduct)
+
+            return res.json({message:"Success."})
         }
         
 

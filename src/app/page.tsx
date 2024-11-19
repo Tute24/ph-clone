@@ -58,18 +58,6 @@ export default function HomePage(){
     voteUp()
     },[upVoteProduct])
 
-    async function upVote (){
-        try{
-        const response = await axios.post('http://localhost:3000/upVote',upVoteProduct)
-    } catch(error){
-        console.log(error)
-    }
-}
-
-    
-
-    
-
     return(
         <>
         <div className="flex flex-row ">
@@ -106,7 +94,7 @@ export default function HomePage(){
                                             <button onClick={()=>{
                                 setUpVoteProduct({
                                     product: e._id
-                                })
+                                }); e.upVotes++
                             }} className="px-2 border-solid border-2 border-gray-200 rounded-md" type="button">
                                                 <img className="h-5 w-5 p-0" src="/upArrow.png" alt="upVote" />
                                                 <span>

@@ -1,101 +1,133 @@
-import Image from "next/image";
+'use client'
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+import { SignedOut, SignInButton } from "@clerk/clerk-react"
+import { SignedIn } from "@clerk/nextjs"
+import axios from "axios"
+import Link from "next/link"
+import { useEffect, useState } from "react"
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+export default function HomePage(){
+
+    const [productsArray, setProductsArray] = useState([])
+    const [tagsArray, setTagsArray] = useState<string[]>([])
+    const [mouseOverProduct,setMouseOverProduct] = useState<string>('')
+    const [upVoteProduct, setUpVoteProduct] = useState({
+        product: ''
+    })
+
+    useEffect(()=>{
+        async function fetchProducts(){
+            try{
+                const response = await axios.get('http://localhost:3000/productsList')
+                if(response){
+                    const productsData = response.data.products
+                    const tagsFetch: string[] = productsData.flatMap((e:{
+                        _id: string,
+                        description:string,
+                        productName:string,
+                        productUrl: string,
+                        tags:string[],
+                        upVotes: number
+                    } ) => e.tags.flatMap(tag => tag.split(/,\s*/)))
+                    console.log(tagsFetch)
+                    console.log(productsData)
+                    setProductsArray(productsData)
+                    setTagsArray([... tagsArray])
+
+                    const uniqueTags = [... new Set (tagsFetch)]
+                    setTagsArray(uniqueTags)
+                    
+                }
+            }catch(error){
+                console.log(error)
+        }
+    }
+    fetchProducts()
+},[])
+
+    useEffect(()=>{
+         async function voteUp(){
+            console.log(upVoteProduct)
+            try{
+                const response = await axios.post('http://localhost:3000/upVote',upVoteProduct)
+            }catch(error){
+
+            }
+            
+    }
+    voteUp()
+    },[upVoteProduct])
+
+    return(
+        <>
+        <div className="flex flex-row ">
+            <div className="w-9/12">
+                <h1 className="flex justify-center p-4 font-bold">Products:</h1>
+                <ul className="flex flex-col text-center items-center">
+                    {productsArray.map((e:{
+                        _id: string,
+                        description:string,
+                        productName:string,
+                        productUrl: string,
+                        tags:string[],
+                        upVotes: number
+                    }) => (
+                            <div id={e.productName}  key={e._id} className="p-5 border-gray-400 w-3/5">
+                                <li key={e._id} className="flex flex-col justify-center border-solid border-2 shadow-md rounded-lg hover:shadow-lg" >
+                                    <h2 className="font-bold p-2">{e.productName}</h2>
+                                    <div className="flex flex-row justify-evenly items-center ">
+                                        
+                                        <p >About: {e.description}</p>
+                                        <Link href={e.productUrl} target="blank" className="  text-orange-500 hover:underline ">Official Website</Link>
+                                        <SignedOut>
+                                            <SignInButton mode="modal">
+                                                <button className="px-2 border-solid border-2 border-gray-200 rounded-md" type="button" >
+                                                    <img className="h-5 w-5 p-0" src="/upArrow.png" alt="upVote" />
+                                                    <span>
+                                                        {e.upVotes}
+                                                    </span>
+                                                </button>
+                                            </SignInButton>
+                                        </SignedOut>
+                                        <SignedIn>
+                                            <input type="hidden" name="product" value={e._id} />
+                                            <button onClick={()=>{
+                                setUpVoteProduct({
+                                    product: e._id
+                                }); e.upVotes++
+                            }} className="px-2 border-solid border-2 border-gray-200 rounded-md" type="button">
+                                                <img className="h-5 w-5 p-0" src="/upArrow.png" alt="upVote" />
+                                                <span className="text-orange-500">
+                                                    {e.upVotes}
+                                                </span>
+                                            </button>
+                                        </SignedIn>
+                                    </div >
+                                    <div className="text-xs text-orange-500 p-2 flex flex-row gap-2">
+
+                                        {e.tags.flatMap(tag => tag.split(/,\s*/)).map((item, index) =>(
+                                                <span className="hover:underline cursor-pointer" key={`${e._id}-${index}`}>{item}</span>
+                                            ))}
+                                    </div>
+                                </li>
+                            </div>
+                            )
+                        )
+                            }
+                    
+                </ul>
+            </div>
+            <div>
+                <h2 className="flex justify-center p-4 font-bold">Categories:</h2>
+                <ul className="flex flex-row m-auto">
+                    {tagsArray.map(e =>(
+                    <li className="p-2" key={e}>
+                        <span className="text-sm text-orange-500 hover:underline cursor-pointer">{e}</span>
+                    </li>
+                    ))}
+                </ul>
+            </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+        </>
+    )
 }

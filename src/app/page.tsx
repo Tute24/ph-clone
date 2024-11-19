@@ -106,7 +106,11 @@ export default function HomePage(){
                                     <div className="text-xs text-orange-500 p-2 flex flex-row gap-2">
 
                                         {e.tags.flatMap(tag => tag.split(/,\s*/)).map((item, index) =>(
-                                                <span className="hover:underline cursor-pointer" key={`${e._id}-${index}`}>{item}</span>
+                                                <Link key={`${e._id}-${index}`} href={`/tags/${item}`}>
+                                                    <span className="hover:underline cursor-pointer">
+                                                        {item}
+                                                    </span>
+                                                </Link>
                                             ))}
                                     </div>
                                 </li>
@@ -122,7 +126,11 @@ export default function HomePage(){
                 <ul className="flex flex-row m-auto">
                     {tagsArray.map(e =>(
                     <li className="p-2" key={e}>
-                        <span className="text-sm text-orange-500 hover:underline cursor-pointer">{e}</span>
+                        <Link href={`/tags/${e}`}>
+                            <span className="text-sm text-orange-500 hover:underline cursor-pointer">
+                                {e}
+                            </span>
+                        </Link>
                     </li>
                     ))}
                 </ul>

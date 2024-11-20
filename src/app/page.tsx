@@ -9,7 +9,6 @@ import { useEffect, useState } from "react"
 
 export default function HomePage(){
     const {tagsArray, setTagsArray} = useContextWrap()
-    const {selectedTag,setSelectedTag} = useContextWrap()
     const [productsArray, setProductsArray] = useState([])
     const [mouseOverProduct,setMouseOverProduct] = useState<string>('')
     const [upVoteProduct, setUpVoteProduct] = useState({
@@ -107,7 +106,7 @@ export default function HomePage(){
                                     <div className="text-xs text-orange-500 p-2 flex flex-row gap-2">
 
                                         {e.tags.flatMap(tag => tag.split(/,\s*/)).map((item, index) =>(
-                                                <Link onClick={()=>{setSelectedTag(item)}} key={`${e._id}-${index}`} href={`/tags/${item}`}>
+                                                <Link key={`${e._id}-${index}`} href={`/tags/${item}`}>
                                                     <span className="hover:underline cursor-pointer">
                                                         {item}
                                                     </span>
@@ -127,7 +126,7 @@ export default function HomePage(){
                 <ul className="flex flex-row m-auto">
                     {tagsArray.map(e =>(
                     <li className="p-2" key={e}>
-                        <Link onClick={()=>{setSelectedTag(e)}} href={`/tags/${e}`}>
+                        <Link href={`/tags/${e}`}>
                             <span className="text-sm text-orange-500 hover:underline cursor-pointer">
                                 {e}
                             </span>

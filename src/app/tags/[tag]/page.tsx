@@ -1,5 +1,23 @@
-export default function TagPage({params}:{params:{tag: string}}){
+'use client'
+
+import { useContextWrap } from "@/contexts/ContextWrap"
+import axios from "axios"
+import { useParams } from "next/navigation"
+
+
+export default function TagPage(){
+
+    const {tag} = useParams<{tag:string}>()
+
+    async function getAll(){
+        try{
+            const response = await axios.post('/getAll')
+        }catch(error){
+
+        }
+    }
+
     return(
-        <h2>{params.tag}</h2>
+        <h2>{decodeURIComponent(tag)}</h2>
     )
 }

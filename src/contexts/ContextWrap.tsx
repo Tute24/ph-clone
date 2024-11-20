@@ -21,8 +21,6 @@ interface ContextWrapProps {
         setStatusMessage: (value:string) => void;
         tagsArray: string[];
         setTagsArray: (value: string[]) => void;
-        selectedTag: string;
-        setSelectedTag: (value: string) => void;
 }
 
 const ContextWrap = createContext<ContextWrapProps | undefined>(undefined)
@@ -42,10 +40,9 @@ export function ContextWrapProvider ({children}: {children: React.ReactNode}){
 
     const [tagsArray, setTagsArray] = useState<string[]>([])
 
-    const [selectedTag,setSelectedTag] = useState<string>('')
 
     return(
-        <ContextWrap.Provider value={{productInfos, setProductInfos,statusMessage,setStatusMessage, tagsArray, setTagsArray,selectedTag,setSelectedTag}} >
+        <ContextWrap.Provider value={{productInfos, setProductInfos,statusMessage,setStatusMessage, tagsArray, setTagsArray}} >
             {children}
         </ContextWrap.Provider>
     )

@@ -1,5 +1,5 @@
 "use client"
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 interface ContextWrapProps {
         productInfos: {
@@ -40,6 +40,20 @@ export function ContextWrapProvider ({children}: {children: React.ReactNode}){
 
     const [tagsArray, setTagsArray] = useState<string[]>([])
 
+    useEffect(()=>{
+        const storagedTags = localStorage.getItem('tags')
+
+        if(storagedTags){
+            setTagsArray(storagedTags.split(','))
+        }
+    },[])
+
+    useEffect(()=>{
+        if(tagsArray.length > 0)
+            {
+                localStorage.setItem('tags',tagsArray.join(','))
+            }
+    },[tagsArray])
 
     return(
         <ContextWrap.Provider value={{productInfos, setProductInfos,statusMessage,setStatusMessage, tagsArray, setTagsArray}} >

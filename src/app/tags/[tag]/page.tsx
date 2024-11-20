@@ -13,26 +13,34 @@ export default function TagPage(){
     const {tag} = useParams<{tag:string}>()
     const decodedTag = {decoded: decodeURIComponent(tag)}
     const [selectedTagArray,setSelectedTagArray] = useState([])
+    const {tagsArray, setTagsArray} = useContextWrap()
+
+    useEffect(() => {
+        if (tagsArray.length === 0) {
+            console.log("Tags ainda não carregadas");
+        } else {
+            console.log("Tags carregadas do contexto:", tagsArray);
+        }
+    }, [tagsArray])
 
     useEffect(()=>{
         async function getProductsWithTag(){
             try{
                 const response = await axios.post('http://localhost:3000/getAll',decodedTag)
                 const products = response.data.products
-                setSelectedTagArray(products)
-                console.log(products)
-                console.log(selectedTagArray)
+                setSelectedTagArray(products)               
             }catch(error){
-                console.log(error)
+                console.log(error)      
             }
         }
         getProductsWithTag()
     },[])
 
     return(
-        <div>
-            <h1 className="flex justify-center p-4 font-bold">{decodedTag.decoded} products: </h1>
+        <div className="flex flex-row ">
+            
             <div className="w-9/12">
+                <h1 className="flex justify-center p-4 font-bold">{decodedTag.decoded} products: </h1>
                 <ul className="flex flex-col text-center items-center">
                     {selectedTagArray.map((products:{
                         _id: string,
@@ -88,7 +96,20 @@ export default function TagPage(){
                     }
                 </ul>
             </div>
-            
+            <div>
+            <h2 className="flex justify-center p-4 font-bold">Categories:</h2>
+                <ul className="flex flex-row m-auto">
+                    {tagsArray.map(tag =>(
+                    <li className="p-2" key={tag}>
+                        <Link href={`/tags/${tag}`}>
+                            <span className="text-sm text-orange-500 hover:underline cursor-pointer">
+                                {tag}
+                            </span>
+                        </Link>
+                    </li>
+                    ))}
+                </ul>
+            </div>  
         </div>
     )
 }

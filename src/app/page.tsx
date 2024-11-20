@@ -29,11 +29,7 @@ export default function HomePage(){
                         tags:string[],
                         upVotes: number
                     } ) => e.tags.flatMap(tag => tag.split(/,\s*/)))
-                    console.log(tagsFetch)
-                    console.log(productsData)
                     setProductsArray(productsData)
-                    setTagsArray([... tagsArray])
-
                     const uniqueTags = [... new Set (tagsFetch)]
                     setTagsArray(uniqueTags)
                     

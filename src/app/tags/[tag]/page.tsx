@@ -11,7 +11,7 @@ export default function TagPage(){
 
     async function getAll(){
         try{
-            const response = await axios.post('/getAll')
+            const response = await axios.post('http://localhost:3000/getAll')
         }catch(error){
 
         }

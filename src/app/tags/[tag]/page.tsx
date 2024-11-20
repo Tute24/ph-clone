@@ -9,12 +9,12 @@ import { useEffect } from "react"
 export default function TagPage(){
 
     const {tag} = useParams<{tag:string}>()
-    const decodedTag = decodeURIComponent(tag)
+    const decodedTag = {decoded: decodeURIComponent(tag)}
 
     useEffect(()=>{
         async function getAll(){
             try{
-                const response = await axios.get('http://localhost:3000/getAll')
+                const response = await axios.post('http://localhost:3000/getAll',decodedTag)
                 const products = response.data.products
                 
                 const filteredProducts = products.filter((product:{
@@ -25,7 +25,7 @@ export default function TagPage(){
                         tags:string[],
                         upVotes: number
                 }) =>(
-                    product.tags.flatMap(tag => tag.split(/,\s*/)).includes(decodedTag)
+                    product.tags.flatMap(tag => tag.split(/,\s*/)).includes(decodedTag.decoded)
                 ))
 
                 console.log(filteredProducts)

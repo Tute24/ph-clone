@@ -12,28 +12,16 @@ export default function TagPage(){
     const decodedTag = {decoded: decodeURIComponent(tag)}
 
     useEffect(()=>{
-        async function getAll(){
+        async function getProductsWithTag(){
             try{
                 const response = await axios.post('http://localhost:3000/getAll',decodedTag)
                 const products = response.data.products
-                
-                const filteredProducts = products.filter((product:{
-                    _id: string,
-                        description:string,
-                        productName:string,
-                        productUrl: string,
-                        tags:string[],
-                        upVotes: number
-                }) =>(
-                    product.tags.flatMap(tag => tag.split(/,\s*/)).includes(decodedTag.decoded)
-                ))
-
-                console.log(filteredProducts)
+                console.log(products)
             }catch(error){
-    
+                console.log(error)
             }
         }
-        getAll()
+        getProductsWithTag()
     },[])
 
     return(

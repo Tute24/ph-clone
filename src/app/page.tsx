@@ -75,7 +75,7 @@ export default function HomePage(){
                             <div id={e.productName}  key={e._id} className="p-5 border-gray-400 w-3/5">
                                 <li key={e._id} className="flex flex-col justify-center border-solid border-2 shadow-md rounded-lg hover:shadow-lg" >
                                     <h2 className="font-bold p-2">{e.productName}</h2>
-                                    <div className="flex flex-row justify-evenly items-center ">
+                                    <div className="flex flex-row justify-between gap-4 items-center ml-5 mr-5 ">
                                         
                                         <p >About: {e.description}</p>
                                         <Link href={e.productUrl} target="blank" className="  text-orange-500 hover:underline ">Official Website</Link>

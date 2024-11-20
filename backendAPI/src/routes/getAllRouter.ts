@@ -5,7 +5,7 @@ import Product from '../Schemas/product'
 getAllRouter.get('/getAll',async(req: Request,res: Response): Promise<any> =>{
 
     try{
-        const database = await Product.find({})
+        const database = await Product.find({},'productName description productUrl upVotes tags')
 
         return res.json({message:"Success", products: database})
     }catch(error){

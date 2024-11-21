@@ -47,9 +47,7 @@ export default function HomePage(){
             try{
                 const response = await axios.post('http://localhost:3000/upVote',upVoteProduct)
             }catch(error){
-
-            }
-            
+            }       
     }
     voteUp()
     },[upVoteProduct])

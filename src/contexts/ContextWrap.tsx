@@ -1,4 +1,5 @@
 "use client"
+import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 
 interface ContextWrapProps {
@@ -65,6 +66,18 @@ export function ContextWrapProvider ({children}: {children: React.ReactNode}){
                 localStorage.setItem('tags',tagsArray.join(','))
             }
     },[tagsArray])
+
+    useEffect(()=>{
+        async function voteUp(){
+           console.log(upVoteProduct)
+           try{
+               const response = await axios.post('http://localhost:3000/upVote',upVoteProduct)
+           }catch(error){
+            console.log(error)
+           }       
+   }
+   voteUp()
+   },[upVoteProduct])
 
     return(
         <ContextWrap.Provider value={{

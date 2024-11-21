@@ -7,13 +7,13 @@ import Link from "next/link"
 import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
 
-
 export default function TagPage(){
 
     const {tag} = useParams<{tag:string}>()
     const decodedTag = {decoded: decodeURIComponent(tag)}
     const [selectedTagArray,setSelectedTagArray] = useState([])
     const {tagsArray, setTagsArray} = useContextWrap()
+    const {upVoteProduct, setUpVoteProduct} = useContextWrap()
 
     useEffect(() => {
         if (tagsArray.length === 0) {
@@ -42,7 +42,21 @@ export default function TagPage(){
             <div className="w-9/12">
                 <h1 className="flex justify-center p-4 font-bold">{decodedTag.decoded} products: </h1>
                 <ul className="flex flex-col text-center items-center">
-                    {selectedTagArray.map((products:{
+                    {selectedTagArray.sort((a:{
+                        _id: string,
+                        description:string,
+                        productName:string,
+                        productUrl: string,
+                        tags:string[],
+                        upVotes: number
+                    },b:{
+                        _id: string,
+                        description:string,
+                        productName:string,
+                        productUrl: string,
+                        tags:string[],
+                        upVotes: number
+                    }) => b.upVotes - a.upVotes).map((product:{
                         _id: string,
                         description:string,
                         productName:string,
@@ -50,12 +64,12 @@ export default function TagPage(){
                         tags:string[],
                         upVotes: number
                     }) =>  (
-                            <div key={products._id} className="p-5 border-gray-400 w-3/5">
-                                <li key={products._id} className="flex flex-col justify-center border-solid border-2 shadow-md rounded-lg hover:shadow-lg" >
-                                        <h2 className="font-bold p-2">{products.productName}</h2>
+                            <div key={product._id} className="p-5 border-gray-400 w-3/5">
+                                <li key={product._id} className="flex flex-col justify-center border-solid border-2 shadow-md rounded-lg hover:shadow-lg" >
+                                        <h2 className="font-bold p-2">{product.productName}</h2>
                                         <div className="flex flex-row justify-between gap-4 items-center ml-5 mr-5 ">
-                                            <p>About: {products.description}</p>
-                                            <Link href={products.productUrl} target="blank" className="  text-orange-500 hover:underline ">
+                                            <p>About: {product.description}</p>
+                                            <Link href={product.productUrl} target="blank" className="  text-orange-500 hover:underline ">
                                             Official Website
                                             </Link>
                                             <SignedOut>
@@ -63,25 +77,26 @@ export default function TagPage(){
                                                 <button className="px-2 border-solid border-2 border-gray-200 rounded-md" type="button" >
                                                     <img className="h-5 w-5 p-0" src="/upArrow.png" alt="upVote" />
                                                     <span>
-                                                        {products.upVotes}
+                                                        {product.upVotes}
                                                     </span>
                                                 </button>
                                                 </SignInButton>
                                             </SignedOut>
                                             <SignedIn>
                                                 <button type="button" className="px-2 border-solid border-2 border-gray-200 rounded-md" onClick={()=>{
-                                                    products.upVotes++
+                                                    product.upVotes++;
+                                                    setUpVoteProduct({product: product._id})
                                                 }}>
                                                     <img className="h-5 w-5 p-0" src="/upArrow.png" alt="upVote" />
                                                     <span className="text-orange-500">
-                                                        {products.upVotes}
+                                                        {product.upVotes}
                                                     </span>
                                                 </button>
                                             </SignedIn>
                                         </div>
                                         <div className="text-xs text-orange-500 p-2 flex flex-row gap-2">
-                                            {products.tags.flatMap(tag => tag.split(/,\s*/)).map((tag,index)=>(
-                                                <Link href={`/tags/${tag}`} key={`${products._id} - ${index}`}>
+                                            {product.tags.flatMap(tag => tag.split(/,\s*/)).map((tag,index)=>(
+                                                <Link href={`/tags/${tag}`} key={`${product._id} - ${index}`}>
                                                     <span className="hover:underline cursor-pointer">
                                                         {tag}
                                                     </span>

@@ -9,12 +9,10 @@ import { useEffect, useState } from "react"
 
 export default function HomePage(){
     const {tagsArray, setTagsArray} = useContextWrap()
+    const {upVoteProduct, setUpVoteProduct} = useContextWrap()
     const [productsArray, setProductsArray] = useState([])
     const [mouseOverProduct,setMouseOverProduct] = useState<string>('')
-    const [upVoteProduct, setUpVoteProduct] = useState({
-        product: ''
-    })
-
+    
     useEffect(()=>{
         async function fetchProducts(){
             try{
@@ -29,11 +27,7 @@ export default function HomePage(){
                         tags:string[],
                         upVotes: number
                     } ) => e.tags.flatMap(tag => tag.split(/,\s*/)))
-                    console.log(tagsFetch)
-                    console.log(productsData)
                     setProductsArray(productsData)
-                    setTagsArray([... tagsArray])
-
                     const uniqueTags = [... new Set (tagsFetch)]
                     setTagsArray(uniqueTags)
                     
@@ -45,26 +39,27 @@ export default function HomePage(){
     fetchProducts()
 },[])
 
-    useEffect(()=>{
-         async function voteUp(){
-            console.log(upVoteProduct)
-            try{
-                const response = await axios.post('http://localhost:3000/upVote',upVoteProduct)
-            }catch(error){
-
-            }
-            
-    }
-    voteUp()
-    },[upVoteProduct])
-
     return(
         <>
         <div className="flex flex-row ">
             <div className="w-9/12">
                 <h1 className="flex justify-center p-4 font-bold">Products:</h1>
                 <ul className="flex flex-col text-center items-center">
-                    {productsArray.map((e:{
+                    {productsArray.sort((a:{
+                        _id: string,
+                        description:string,
+                        productName:string,
+                        productUrl: string,
+                        tags:string[],
+                        upVotes: number
+                    },b:{
+                        _id: string,
+                        description:string,
+                        productName:string,
+                        productUrl: string,
+                        tags:string[],
+                        upVotes: number
+                    }) => b.upVotes - a.upVotes).map((e:{
                         _id: string,
                         description:string,
                         productName:string,

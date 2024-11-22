@@ -6,6 +6,7 @@ interface ContextWrapProps {
         productInfos: {
             productName: string,
             description: string,
+            summDesc: string,
             productUrl: string,
             tags:string[]
         };
@@ -14,6 +15,7 @@ interface ContextWrapProps {
             {
                 productName: string,
                 description: string,
+                summDesc: string,
                 productUrl: string,
                 tags:string[]
             }
@@ -35,10 +37,12 @@ const ContextWrap = createContext<ContextWrapProps | undefined>(undefined)
 export function ContextWrapProvider ({children}: {children: React.ReactNode}){
     const [productInfos,setProductInfos] = useState<{productName: string,
         description: string,
+        summDesc: string,
         productUrl: string,
         tags:string[]}>({
             productName: '',
             description: '',
+            summDesc:'',
             productUrl: '',
             tags: []
         })

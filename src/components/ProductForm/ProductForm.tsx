@@ -6,6 +6,7 @@ interface ProductFormsProps{
     productInfos:{
             productName: string,
             description: string,
+            summDesc: string,
             productUrl: string,
             tags:string[]
     },

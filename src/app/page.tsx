@@ -22,6 +22,7 @@ export default function HomePage(){
                     const tagsFetch: string[] = productsData.flatMap((e:{
                         _id: string,
                         description:string,
+                        summDesc: string,
                         productName:string,
                         productUrl: string,
                         tags:string[],
@@ -48,6 +49,7 @@ export default function HomePage(){
                     {productsArray.sort((a:{
                         _id: string,
                         description:string,
+                        summDesc: string,
                         productName:string,
                         productUrl: string,
                         tags:string[],
@@ -55,6 +57,7 @@ export default function HomePage(){
                     },b:{
                         _id: string,
                         description:string,
+                        summDesc: string,
                         productName:string,
                         productUrl: string,
                         tags:string[],
@@ -62,6 +65,7 @@ export default function HomePage(){
                     }) => b.upVotes - a.upVotes).map((e:{
                         _id: string,
                         description:string,
+                        summDesc: string,
                         productName:string,
                         productUrl: string,
                         tags:string[],

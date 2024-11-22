@@ -45,6 +45,7 @@ export default function TagPage(){
                     {selectedTagArray.sort((a:{
                         _id: string,
                         description:string,
+                        summDesc: string,
                         productName:string,
                         productUrl: string,
                         tags:string[],
@@ -52,6 +53,7 @@ export default function TagPage(){
                     },b:{
                         _id: string,
                         description:string,
+                        summDesc: string,
                         productName:string,
                         productUrl: string,
                         tags:string[],
@@ -59,6 +61,7 @@ export default function TagPage(){
                     }) => b.upVotes - a.upVotes).map((product:{
                         _id: string,
                         description:string,
+                        summDesc: string,
                         productName:string,
                         productUrl: string,
                         tags:string[],

@@ -5,7 +5,7 @@ import Product from '../Schemas/product'
 productsListRouter.get('/productsList', async (req: Request,res:Response):Promise<any>=>{
 
     try{
-        const productsList: string[] = await Product.find({}, 'productName description productUrl upVotes tags')
+        const productsList: string[] = await Product.find({}, 'productName description productUrl upVotes tags summDesc')
         if(productsList){
             return res.json({message:'Fetched successfully.', products: productsList})
         }

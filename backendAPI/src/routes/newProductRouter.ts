@@ -14,7 +14,7 @@ newProductRouter.post('/newProduct', async (req: Request, res: Response): Promis
             const response = await openai.chat.completions.create({
                 model: 'gpt-4o-mini',
                 messages: [
-                    {role: 'system', content: 'Chat, you must summarize the passed text into a 10-word max description about it, please.'},
+                    {role: 'system', content: 'Chat, you must summarize the passed text into a 10 to 20 word max description about it, like you were giving a concise explanation to someone about a product, please.'},
                     {role: 'user', content: description}
                 ],
                 stream: false

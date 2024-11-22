@@ -18,7 +18,7 @@ getAllRouter.post('/getAll',async(req: Request,res: Response): Promise<any> =>{
     const {decoded} = req.body
     if(decoded){
     try{
-        const database: (Document & ProductType)[] = await Product.find({},'productName description productUrl upVotes tags')
+        const database: (Document & ProductType)[] = await Product.find({},'productName description productUrl upVotes tags summDesc')
         const filteredDatabse = database.filter(product =>(
             product.tags.flatMap(tag => tag.split(/,\s*/)).includes(decoded)
         ))

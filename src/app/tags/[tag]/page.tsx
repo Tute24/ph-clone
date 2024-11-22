@@ -71,7 +71,7 @@ export default function TagPage(){
                                 <li key={product._id} className="flex flex-col justify-center border-solid border-2 shadow-md rounded-lg hover:shadow-lg" >
                                         <h2 className="font-bold p-2">{product.productName}</h2>
                                         <div className="flex flex-row justify-between gap-4 items-center ml-5 mr-5 ">
-                                            <p>About: {product.description}</p>
+                                            <p className="text-sm">About - {product.summDesc}</p>
                                             <Link href={product.productUrl} target="blank" className="  text-orange-500 hover:underline ">
                                             Official Website
                                             </Link>

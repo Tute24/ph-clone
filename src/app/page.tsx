@@ -76,7 +76,7 @@ export default function HomePage(){
                                     <h2 className="font-bold p-2">{e.productName}</h2>
                                     <div className="flex flex-row justify-between gap-4 items-center ml-5 mr-5 ">
                                         
-                                        <p >About: {e.summDesc}</p>
+                                        <p className="text-sm" >About - {e.summDesc}</p>
                                         <Link href={e.productUrl} target="blank" className="  text-orange-500 hover:underline ">Official Website</Link>
                                         <SignedOut>
                                             <SignInButton mode="modal">

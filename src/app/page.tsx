@@ -5,13 +5,26 @@ import { SignedOut, SignInButton } from "@clerk/clerk-react"
 import { SignedIn } from "@clerk/nextjs"
 import axios from "axios"
 import Link from "next/link"
-import { useEffect, useState } from "react"
+import { DialogHTMLAttributes, useEffect, useRef, useState } from "react"
+
+interface ProdArrayProps {
+    _id: string,
+    description:string,
+    summDesc: string,
+    productName:string,
+    productUrl: string,
+    tags:string[],
+     upVotes: number
+}
 
 export default function HomePage(){
     const {tagsArray, setTagsArray} = useContextWrap()
     const {upVoteProduct, setUpVoteProduct} = useContextWrap()
-    const [productsArray, setProductsArray] = useState([])
+    const [productsArray, setProductsArray] = useState<ProdArrayProps[]>([])
     const [mouseOverProduct,setMouseOverProduct] = useState<string>('')
+    const modalDisplay = useRef<HTMLDialogElement>(null)
+    const [selectedLi,setSelectedLi] = useState<string>('')
+    const [dialogRef, setDialogRef] = useState<ProdArrayProps>()
     
     useEffect(()=>{
         async function fetchProducts(){
@@ -40,39 +53,33 @@ export default function HomePage(){
     fetchProducts()
 },[])
 
+    useEffect(()=>{
+        function getRef(){
+        const dialogRef = productsArray.find(reference => (reference._id === selectedLi))
+        setDialogRef(dialogRef)
+        console.log(dialogRef)
+        }
+        getRef()
+    },[selectedLi])
+
+    function openModal() {
+
+        modalDisplay.current?.showModal()
+    }
+
+    function closeModel (){
+        modalDisplay.current?.close()
+    }
+
     return(
         <>
         <div className="flex flex-row ">
             <div className="w-9/12">
                 <h1 className="flex justify-center p-4 font-bold">Products:</h1>
                 <ul className="flex flex-col text-center items-center">
-                    {productsArray.sort((a:{
-                        _id: string,
-                        description:string,
-                        summDesc: string,
-                        productName:string,
-                        productUrl: string,
-                        tags:string[],
-                        upVotes: number
-                    },b:{
-                        _id: string,
-                        description:string,
-                        summDesc: string,
-                        productName:string,
-                        productUrl: string,
-                        tags:string[],
-                        upVotes: number
-                    }) => b.upVotes - a.upVotes).map((e:{
-                        _id: string,
-                        description:string,
-                        summDesc: string,
-                        productName:string,
-                        productUrl: string,
-                        tags:string[],
-                        upVotes: number
-                    }) => (
+                    {productsArray.sort((a,b) => b.upVotes - a.upVotes).map((e) => (
                             <div id={e.productName}  key={e._id} className="p-5 border-gray-400 w-3/5">
-                                <li key={e._id} className="flex flex-col justify-center border-solid border-2 shadow-md rounded-lg hover:shadow-lg" >
+                                <li onClick={() => {openModal(); setSelectedLi(e._id)}} key={e._id} className="flex flex-col justify-center cursor-pointer border-solid border-2 shadow-md rounded-lg hover:shadow-lg" >
                                     <h2 className="font-bold p-2">{e.productName}</h2>
                                     <div className="flex flex-row justify-between gap-4 items-center ml-5 mr-5 ">
                                         
@@ -122,7 +129,7 @@ export default function HomePage(){
             </div>
             <div>
                 <h2 className="flex justify-center p-4 font-bold">Categories:</h2>
-                <ul className="flex flex-row m-auto">
+                <ul className="flex flex-col m-auto">
                     {tagsArray.map(e =>(
                     <li className="p-2" key={e}>
                         <Link href={`/tags/${e}`}>
@@ -134,6 +141,11 @@ export default function HomePage(){
                     ))}
                 </ul>
             </div>
+            
+                <dialog ref={modalDisplay}>
+                    <button onClick={closeModel}>Close</button>
+                    <h2>{dialogRef?.productName}</h2>
+                </dialog>
         </div>
         </>
     )

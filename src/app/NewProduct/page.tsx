@@ -41,7 +41,7 @@ export default function NewProduct(){
                 <ProductForm 
                     productInfos={productInfos}
                     onInputChange={handleInputChange}
-                    onSubmit={handleSubmit}
+                    onSubmit={handleSubmit}                   
                 />
             </SignedIn>
             <SignedOut>

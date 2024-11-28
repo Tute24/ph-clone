@@ -24,6 +24,7 @@ export default function HomePage() {
   const modalDisplay = useRef<HTMLDialogElement>(null)
   const [selectedLi, setSelectedLi] = useState<string>('')
   const [dialogRef, setDialogRef] = useState<ProdArrayProps>()
+  const [rankingIndex, setRankingIndex] = useState(0)
 
   useEffect(() => {
     async function fetchProducts() {
@@ -57,6 +58,7 @@ export default function HomePage() {
   }, [selectedLi])
 
   function openModal() {
+    
     {
       modalDisplay.current?.showModal()
     }
@@ -65,6 +67,8 @@ export default function HomePage() {
   function closeModel() {
     modalDisplay.current?.close()
   }
+
+
 
   return (
     <>
@@ -83,10 +87,11 @@ export default function HomePage() {
                   <li
                     onClick={() => {
                       openModal()
-                      setSelectedLi(e._id)
+                      setSelectedLi(e._id);
+                      setRankingIndex(productsArray.indexOf(e)+1)
                     }}
                     key={e._id}
-                    className="flex flex-col justify-center cursor-pointer border-solid border-2 shadow-md rounded-lg hover:shadow-lg"
+                    className="flex flex-col justify-center cursor-pointer border-solid border-2 shadow-md rounded-lg hover:shadow-lg hover:bg-gray-100"
                   >
                     <h2 className="font-bold p-2">{e.productName}</h2>
                     <div className="flex flex-row justify-between gap-4 items-center ml-5 mr-5 ">
@@ -97,7 +102,7 @@ export default function HomePage() {
                         }}
                         href={e.productUrl}
                         target="blank"
-                        className="  text-orange-500 hover:underline "
+                        className="  text-orangeText hover:underline "
                       >
                         Official Website
                       </Link>
@@ -137,11 +142,11 @@ export default function HomePage() {
                             src="/upArrow.png"
                             alt="upVote"
                           />
-                          <span className="text-orange-500">{e.upVotes}</span>
+                          <span className="text-orangeText">{e.upVotes}</span>
                         </button>
                       </SignedIn>
                     </div>
-                    <div className="text-xs text-orange-500 p-2 flex flex-row gap-2">
+                    <div className="text-xs text-orangeText p-2 flex flex-row gap-2">
                       {e.tags
                         .flatMap((tag) => tag.split(/,\s*/))
                         .map((item, index) => (
@@ -169,7 +174,7 @@ export default function HomePage() {
             {tagsArray.map((e) => (
               <li className="p-2" key={e}>
                 <Link href={`/tags/${e}`}>
-                  <span className="text-sm text-orange-500 hover:underline cursor-pointer">
+                  <span className="text-sm text-orangeText hover:underline cursor-pointer">
                     {e}
                   </span>
                 </Link>
@@ -177,11 +182,65 @@ export default function HomePage() {
             ))}
           </ul>
         </div>
+        <div>
 
-        <dialog ref={modalDisplay}>
-          <button onClick={closeModel}>Close</button>
-          <h2>{dialogRef?.productName}</h2>
-        </dialog>
+          <dialog  className="rounded-md w-full sm:w-3/6" ref={modalDisplay}>
+            <div className='flex flex-row items-center justify-between px-7 mt-5'>
+            <button
+              className="rounded-full  py-2 px-3 border-none hover:text-orangeText hover:bg-gray-100"
+              onClick={closeModel}
+            >
+              X
+            </button>
+            
+            <h3 className='text-vibrantBlue px-7'># <span className='text-6xl font-bold '>{rankingIndex}</span></h3>
+            </div>
+            <div className='px-10 py-5'>
+            <h2 className="font-bold ">{dialogRef?.productName}</h2>
+            <div className="flex flex-row items-center">
+              <div>
+                <span className="text-gray-500 text-sm sm:text-base">{dialogRef?.summDesc}</span>
+              </div>
+              <div className="flex flex-row gap-10 px-6">
+                <button className="border-gray-700 border-solid rounded-md">
+                  <a
+                    className="font-semibold text-sm hover:text-orange1 hover:underline"
+                    target="blank"
+                    href={dialogRef?.productUrl}
+                  >
+                    Visit
+                  </a>
+                </button>
+                <button className="flex flex-row justify-between py-3 px-8 text-white font-bold gap-3 bg-orange1 rounded-md text-sm">
+                  <img
+                    className="h-5 w-5 p-0 "
+                    src="/upArrow.png"
+                    alt="upVote"
+                  />
+                  <p>UPVOTE</p>
+                  <span>{dialogRef?.upVotes}</span>
+                </button>
+              </div>
+            </div>
+            <div className="flex flex-col py-3">
+              <h3 className="">More:</h3>
+              <span className="text-sm">{dialogRef?.description}</span>
+            <div className='flex flex-row py-3 text-sm text-gray-500 items-center'>
+              <p>Launched in</p>
+              <ul className='flex flex-row gap-2 px-3'>
+                {dialogRef?.tags.flatMap((tag) =>
+                  tag.split(/,\s*/).map((item, index) => (
+                    <li className='bg-gray-300 rounded-2xl px-2 py-1 text-gray-600 font-semibold ' key={`${index}-${item}`}>
+                      <Link href={`/tags/${item}`}>{item}</Link>
+                    </li>
+                  ))
+                )}
+              </ul>
+            </div>
+            </div>
+            </div>
+          </dialog>
+        </div>
       </div>
     </>
   )

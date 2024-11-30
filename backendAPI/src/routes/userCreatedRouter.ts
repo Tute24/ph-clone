@@ -12,14 +12,12 @@ userCreatedRouter.post(
         username: username,
         email: email_address,
       })
-
-      if (newUser) {
-        await newUser.save()
-
-        return res.status(200).json({ message: 'Webhook recebido', user: newUser })
-      }
+      console.log('User created')
+      await newUser.save()
+      console.log('User saved on the DB')
+      res.status(200).send('Success!')
     } catch (error) {
-        return res.status(500).json({message:"ServerError"})
+      res.status(500).send('Server Error')
     }
   }
 )

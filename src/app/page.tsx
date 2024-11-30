@@ -12,10 +12,10 @@ import ProdArrayProps from '@/types/ProdArrayProps'
 export default function HomePage() {
   const { tagsArray, setTagsArray } = useContextWrap()
   const { upVoteProduct, setUpVoteProduct } = useContextWrap()
+  const {modalDisplay} = useContextWrap()
+  const {selectedLi, setSelectedLi} = useContextWrap()
+  const {dialogRef,setDialogRef} = useContextWrap()
   const [productsArray, setProductsArray] = useState<ProdArrayProps[]>([])
-  const modalDisplay = useRef<HTMLDialogElement>(null)
-  const [selectedLi, setSelectedLi] = useState<string>('')
-  const [dialogRef, setDialogRef] = useState<ProdArrayProps>()
   const [rankingIndex, setRankingIndex] = useState(0)
 
   useEffect(() => {
@@ -43,7 +43,8 @@ export default function HomePage() {
       const dialogRef = productsArray.find(
         (reference) => reference._id === selectedLi
       )
-      setDialogRef(dialogRef)
+      if(dialogRef){
+      setDialogRef(dialogRef)}
       console.log(dialogRef)
     }
     getRef()
@@ -58,12 +59,12 @@ export default function HomePage() {
 
   function openModal() {
     {
-      modalDisplay.current?.showModal()
+      modalDisplay?.current?.showModal()
     }
   }
 
-  function closeModel() {
-    modalDisplay.current?.close()
+  function closeModal() {
+    modalDisplay?.current?.close()
   }
 
   return (
@@ -181,7 +182,7 @@ export default function HomePage() {
         <div>
           <DialogModal
             dialogRef={dialogRef}
-            clickClose={closeModel}
+            clickClose={closeModal}
             modalDisplay={modalDisplay}
             rankingIndex={rankingIndex}
             setUpVote={setUpVoteProduct}

@@ -1,20 +1,13 @@
 'use client'
 
 import Link from "next/link"
-import { LegacyRef, RefAttributes, RefObject } from "react"
+import { LegacyRef } from "react"
+import ProdArrayProps from "@/types/ProdArrayProps"
 
 interface DialogProps {
     clickClose: (e:any) => void
     rankingIndex: any
-    dialogRef:{
-        _id: string
-        description: string
-        summDesc: string
-        productName: string
-        productUrl: string
-        tags: string[]
-        upVotes: number
-    }
+    dialogRef?:ProdArrayProps
     modalDisplay: LegacyRef<HTMLDialogElement>
 }
 

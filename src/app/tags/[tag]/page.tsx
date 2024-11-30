@@ -32,7 +32,7 @@ export default function TagPage(){
     useEffect(()=>{
         async function getProductsWithTag(){
             try{
-                const response = await axios.post('http://localhost:3000/getAll',decodedTag)
+                const response = await axios.post('https://ph-clone.onrender.com/getAll',decodedTag)
                 const products = response.data.products
                 setSelectedTagArray(products)               
             }catch(error){

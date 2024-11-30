@@ -58,7 +58,6 @@ export default function HomePage() {
   }, [selectedLi])
 
   function openModal() {
-    
     {
       modalDisplay.current?.showModal()
     }
@@ -67,8 +66,6 @@ export default function HomePage() {
   function closeModel() {
     modalDisplay.current?.close()
   }
-
-
 
   return (
     <>
@@ -87,8 +84,8 @@ export default function HomePage() {
                   <li
                     onClick={() => {
                       openModal()
-                      setSelectedLi(e._id);
-                      setRankingIndex(productsArray.indexOf(e)+1)
+                      setSelectedLi(e._id)
+                      setRankingIndex(productsArray.indexOf(e) + 1)
                     }}
                     key={e._id}
                     className="flex flex-col justify-center cursor-pointer border-solid border-2 shadow-md rounded-lg hover:shadow-lg hover:bg-gray-100"
@@ -183,61 +180,67 @@ export default function HomePage() {
           </ul>
         </div>
         <div>
+          <dialog className="rounded-md w-full sm:w-3/6" ref={modalDisplay}>
+            <div className="flex flex-row items-center justify-between px-7 mt-5">
+              <button
+                className="rounded-full  py-2 px-3 border-none hover:text-orangeText hover:bg-gray-100"
+                onClick={closeModel}
+              >
+                X
+              </button>
 
-          <dialog  className="rounded-md w-full sm:w-3/6" ref={modalDisplay}>
-            <div className='flex flex-row items-center justify-between px-7 mt-5'>
-            <button
-              className="rounded-full  py-2 px-3 border-none hover:text-orangeText hover:bg-gray-100"
-              onClick={closeModel}
-            >
-              X
-            </button>
-            
-            <h3 className='text-vibrantBlue px-7'># <span className='text-6xl font-bold '>{rankingIndex}</span></h3>
+              <h3 className="text-vibrantBlue px-7">
+                # <span className="text-6xl font-bold ">{rankingIndex}</span>
+              </h3>
             </div>
-            <div className='px-10 py-5'>
-            <h2 className="font-bold ">{dialogRef?.productName}</h2>
-            <div className="flex flex-row items-center">
-              <div>
-                <span className="text-gray-500 text-sm sm:text-base">{dialogRef?.summDesc}</span>
+            <div className="px-10 py-5">
+              <h2 className="font-bold ">{dialogRef?.productName}</h2>
+              <div className="flex flex-row items-center">
+                <div>
+                  <span className="text-gray-500 text-sm sm:text-base">
+                    {dialogRef?.summDesc}
+                  </span>
+                </div>
+                <div className="flex flex-row gap-10 px-6">
+                  <button className="border-gray-700 border-solid rounded-md">
+                    <a
+                      className="font-semibold text-sm hover:text-orange1 hover:underline"
+                      target="blank"
+                      href={dialogRef?.productUrl}
+                    >
+                      Visit
+                    </a>
+                  </button>
+                  <button className="flex flex-row justify-between py-3 px-8 text-white font-bold gap-3 bg-orange1 rounded-md text-sm">
+                    <img
+                      className="h-5 w-5 p-0 "
+                      src="/upArrow.png"
+                      alt="upVote"
+                    />
+                    <p>UPVOTE</p>
+                    <span>{dialogRef?.upVotes}</span>
+                  </button>
+                </div>
               </div>
-              <div className="flex flex-row gap-10 px-6">
-                <button className="border-gray-700 border-solid rounded-md">
-                  <a
-                    className="font-semibold text-sm hover:text-orange1 hover:underline"
-                    target="blank"
-                    href={dialogRef?.productUrl}
-                  >
-                    Visit
-                  </a>
-                </button>
-                <button className="flex flex-row justify-between py-3 px-8 text-white font-bold gap-3 bg-orange1 rounded-md text-sm">
-                  <img
-                    className="h-5 w-5 p-0 "
-                    src="/upArrow.png"
-                    alt="upVote"
-                  />
-                  <p>UPVOTE</p>
-                  <span>{dialogRef?.upVotes}</span>
-                </button>
+              <div className="flex flex-col py-3">
+                <h3 className="">More:</h3>
+                <span className="text-sm">{dialogRef?.description}</span>
+                <div className="flex flex-row py-3 text-sm text-gray-500 items-center">
+                  <p>Launched in</p>
+                  <ul className="flex flex-row gap-2 px-3">
+                    {dialogRef?.tags.flatMap((tag) =>
+                      tag.split(/,\s*/).map((item, index) => (
+                        <li
+                          className="bg-gray-300 rounded-2xl px-2 py-1 text-gray-600 font-semibold "
+                          key={`${index}-${item}`}
+                        >
+                          <Link href={`/tags/${item}`}>{item}</Link>
+                        </li>
+                      ))
+                    )}
+                  </ul>
+                </div>
               </div>
-            </div>
-            <div className="flex flex-col py-3">
-              <h3 className="">More:</h3>
-              <span className="text-sm">{dialogRef?.description}</span>
-            <div className='flex flex-row py-3 text-sm text-gray-500 items-center'>
-              <p>Launched in</p>
-              <ul className='flex flex-row gap-2 px-3'>
-                {dialogRef?.tags.flatMap((tag) =>
-                  tag.split(/,\s*/).map((item, index) => (
-                    <li className='bg-gray-300 rounded-2xl px-2 py-1 text-gray-600 font-semibold ' key={`${index}-${item}`}>
-                      <Link href={`/tags/${item}`}>{item}</Link>
-                    </li>
-                  ))
-                )}
-              </ul>
-            </div>
-            </div>
             </div>
           </dialog>
         </div>

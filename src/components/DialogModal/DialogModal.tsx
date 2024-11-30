@@ -3,19 +3,26 @@
 import Link from "next/link"
 import { LegacyRef } from "react"
 import ProdArrayProps from "@/types/ProdArrayProps"
+import { SignedIn } from "@clerk/nextjs"
 
 interface DialogProps {
-    clickClose: (e:any) => void
+    clickClose: (value:any) => void
+    displayUpVote: (value?: string | undefined) => void
     rankingIndex: any
     dialogRef?:ProdArrayProps
     modalDisplay: LegacyRef<HTMLDialogElement>
+    setUpVote: (value:{
+        product?: string
+    }) => void
 }
 
 export default function DialogModal({
     dialogRef,
     clickClose,
     modalDisplay,
-    rankingIndex
+    rankingIndex,
+    setUpVote,
+    displayUpVote
 }: DialogProps){
     return (
         <dialog className="rounded-md w-full sm:w-3/6" ref={modalDisplay}>
@@ -49,7 +56,13 @@ export default function DialogModal({
                       Visit
                     </a>
                   </button>
-                  <button className="flex flex-row justify-between py-3 px-8 text-white font-bold gap-3 bg-orange1 rounded-md text-sm">
+                  <SignedIn>
+                  <button onClick={()=>{
+                    setUpVote({
+                        product: dialogRef?._id
+                    })
+                    displayUpVote(dialogRef?._id)
+                  }} className="flex flex-row justify-between py-3 px-8 text-white font-bold gap-3 bg-orange1 rounded-md text-sm">
                     <img
                       className="h-5 w-5 p-0 "
                       src="/upArrow.png"
@@ -58,6 +71,7 @@ export default function DialogModal({
                     <p>UPVOTE</p>
                     <span>{dialogRef?.upVotes}</span>
                   </button>
+                  </SignedIn>
                 </div>
               </div>
               <div className="flex flex-col py-3">

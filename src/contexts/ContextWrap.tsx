@@ -25,10 +25,10 @@ interface ContextWrapProps {
         tagsArray: string[];
         setTagsArray: (value: string[]) => void;
         upVoteProduct: {
-            product: string
+            product?: string
         }
         setUpVoteProduct: (value:{
-            product:string
+            product?:string
         }) => void
 }
 
@@ -51,7 +51,7 @@ export function ContextWrapProvider ({children}: {children: React.ReactNode}){
 
     const [tagsArray, setTagsArray] = useState<string[]>([])
     const [upVoteProduct, setUpVoteProduct] = useState<{
-        product: string
+        product?: string
     }>({
         product:''
     })

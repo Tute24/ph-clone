@@ -49,6 +49,13 @@ export default function HomePage() {
     getRef()
   }, [selectedLi])
 
+  function displayUpVote(productID?: string){
+    const isThere = productsArray.find((product) => product._id === productID)
+    if(isThere && isThere.upVotes){
+      isThere.upVotes++
+    }
+  }
+
   function openModal() {
     {
       modalDisplay.current?.showModal()
@@ -121,7 +128,7 @@ export default function HomePage() {
                             setUpVoteProduct({
                               product: e._id,
                             })
-                            e.upVotes++
+                            displayUpVote(e._id)
                           }}
                           className="px-2 border-solid border-2 border-gray-200 rounded-md"
                           type="button"
@@ -160,11 +167,11 @@ export default function HomePage() {
         <div>
           <h2 className="flex justify-center p-4 font-bold">Categories:</h2>
           <ul className="flex flex-col m-auto">
-            {tagsArray.map((e) => (
-              <li className="p-2" key={e}>
-                <Link href={`/tags/${e}`}>
+            {tagsArray.map((tag) => (
+              <li className="p-2" key={tag}>
+                <Link href={`/tags/${tag}`}>
                   <span className="text-sm text-orangeText hover:underline cursor-pointer">
-                    {e}
+                    {tag}
                   </span>
                 </Link>
               </li>
@@ -176,7 +183,9 @@ export default function HomePage() {
             dialogRef={dialogRef}
             clickClose={closeModel}
             modalDisplay={modalDisplay}
-            rankingIndex={rankingIndex}      
+            rankingIndex={rankingIndex}
+            setUpVote={setUpVoteProduct}
+            displayUpVote={displayUpVote}
           />
         </div>
       </div>

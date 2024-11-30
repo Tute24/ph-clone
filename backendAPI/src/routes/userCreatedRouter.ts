@@ -5,7 +5,11 @@ import User from '../Schemas/user'
 userCreatedRouter.post(
   '/clerkusercreated',
   async (req: Request, res: Response): Promise<any> => {
-    const { email_address, username } = req.body
+    const { data } = req.body
+
+    const username = data.username
+    const email_address = data.email_addresses[0]?.email_address
+    console.log(username,email_address)
 
     try {
       const newUser = new User({

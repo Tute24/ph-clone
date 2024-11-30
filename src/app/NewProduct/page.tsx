@@ -24,7 +24,7 @@ export default function NewProduct(){
         e.preventDefault()
         
         try{
-            const response = await axios.post('http://localhost:3000/newProduct', productInfos)
+            const response = await axios.post('https://ph-clone.onrender.com/newProduct', productInfos)
             if(response){
                 console.log(productInfos)
                 setStatusMessage('Product added successfully!')

@@ -22,7 +22,7 @@ export default function HomePage() {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const response = await axios.get('http://localhost:3000/productsList')
+        const response = await axios.get('https://ph-clone.onrender.com/productsList')
         if (response) {
           const productsData: ProdArrayProps[] = response.data.products
           const tagsFetch: string[] = productsData.flatMap((e) =>

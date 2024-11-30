@@ -93,7 +93,7 @@ export function ContextWrapProvider({
       console.log(upVoteProduct)
       try {
         const response = await axios.post(
-          'http://localhost:3000/upVote',
+          'https://ph-clone.onrender.com/upVote',
           upVoteProduct
         )
       } catch (error) {

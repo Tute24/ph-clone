@@ -1,13 +1,14 @@
 'use client'
 
 import { useContextWrap } from '@/contexts/ContextWrap'
-import { SignedOut, SignInButton } from '@clerk/clerk-react'
+import { SignedOut, SignInButton } from '@clerk/nextjs'
 import { SignedIn } from '@clerk/nextjs'
 import axios from 'axios'
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import DialogModal from '@/components/DialogModal/DialogModal'
 import ProdArrayProps from '@/types/ProdArrayProps'
+import { ClerkApp } from '@clerk/remix'
 
 export default function HomePage() {
   const { tagsArray, setTagsArray } = useContextWrap()
@@ -191,3 +192,5 @@ export default function HomePage() {
     </>
   )
 }
+
+

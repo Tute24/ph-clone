@@ -58,9 +58,7 @@ export default function HomePage() {
   }
 
   function openModal() {
-    {
       modalDisplay?.current?.showModal()
-    }
   }
 
   function closeModal() {

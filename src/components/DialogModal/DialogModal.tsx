@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { LegacyRef } from "react"
 import ProdArrayProps from "@/types/ProdArrayProps"
-import { SignedIn } from "@clerk/nextjs"
+import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs"
 
 interface DialogProps {
     clickClose: (value:any) => void
@@ -56,6 +56,19 @@ export default function DialogModal({
                       Visit
                     </a>
                   </button>
+                  <SignedOut>
+                  <SignInButton mode="modal">
+                    <button onClick={clickClose} className="flex flex-row justify-between py-3 px-8 text-white font-bold gap-3 bg-orange1 rounded-md text-sm">
+                      <img
+                        className="h-5 w-5 p-0 "
+                        src="/upArrow.png"
+                        alt="upVote"
+                      />
+                      <p>UPVOTE</p>
+                      <span>{dialogRef?.upVotes}</span>
+                    </button>
+                  </SignInButton>
+                  </SignedOut>
                   <SignedIn>
                   <button onClick={()=>{
                     setUpVote({

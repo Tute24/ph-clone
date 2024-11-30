@@ -83,7 +83,9 @@ function closeModal(){
                                         <h2 className="font-bold p-2">{product.productName}</h2>
                                         <div className="flex flex-row justify-between gap-4 items-center ml-5 mr-5 ">
                                             <p className="text-sm">About - {product.summDesc}</p>
-                                            <Link href={product.productUrl} target="blank" className="  text-orange-500 hover:underline ">
+                                            <Link onClick={(event)=>{
+                                                event.stopPropagation()
+                                            }} href={product.productUrl} target="blank" className="  text-orange-500 hover:underline ">
                                             Official Website
                                             </Link>
                                             <SignedOut>
@@ -97,9 +99,10 @@ function closeModal(){
                                                 </SignInButton>
                                             </SignedOut>
                                             <SignedIn>
-                                                <button type="button" className="px-2 border-solid border-2 border-gray-200 rounded-md" onClick={()=>{
+                                                <button type="button" className="px-2 border-solid border-2 border-gray-200 rounded-md" onClick={(event)=>{
                                                     displayUpVote(product._id);
                                                     setUpVoteProduct({product: product._id})
+                                                    event.stopPropagation()
                                                 }}>
                                                     <img className="h-5 w-5 p-0" src="/upArrow.png" alt="upVote" />
                                                     <span className="text-orange-500">

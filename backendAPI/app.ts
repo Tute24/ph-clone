@@ -12,7 +12,7 @@ const cors = require('cors')
 import {clerkMiddleware } from '@clerk/express'
 import { Clerk } from '@clerk/clerk-js'
 
-
+mongoose.connect(process.env.MONGODB_URI)
 
 app.use(cors())
 app.use(express.json())

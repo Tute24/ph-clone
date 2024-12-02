@@ -18,14 +18,14 @@ export default function Dashboard(){
 
             const clerk = new Clerk(nextPublicKey)
             await clerk.load()
-            try{
-                
-                const token = await clerk.session?.getToken()
+            const token = await clerk.session?.getToken()
                 if(!token){
                     console.log('No token provided!')
                     return
                 }
                 console.log(token)
+            try{
+                
                 const response = await axios.get('https://ph-clone.onrender.com/dashboard',{headers:{
                     'Authorization': `Bearer ${token}`
                 }})

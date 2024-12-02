@@ -13,6 +13,8 @@ export default async function Header (){
                 <input type="text" className="solid border-black border-2" placeholder="Search right here"/>
                 <Link href='/NewProduct'><button type="button" className="p-2">New Product</button></Link>
                 <button type="button" className='p-2'>About</button>
+                <Link href='/dashboard'><button type="button" className="p-2">Dashboard</button></Link>
+                <button type="button" className='p-2'>About</button>
                 <SignedOut>
                     <SignInButton><button className='p-2'>Sign In!</button></SignInButton>
                     <SignUpButton><button className='p-2'>Register!</button></SignUpButton>

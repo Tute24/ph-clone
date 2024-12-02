@@ -6,29 +6,14 @@ import axios from "axios"
 
 import { useEffect } from "react"
 
-
 export default function Dashboard(){
     
     useEffect(()=>{
         async function getDashboard() {
-            const nextPublicKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
-            if(!nextPublicKey){
-                throw new Error('Publick Key not provided!')
-            }
-
-            const clerk = new Clerk(nextPublicKey)
-            await clerk.load()
-            const token = await clerk.session?.getToken()
-                if(!token){
-                    console.log('No token provided!')
-                    return
-                }
-                console.log(token)
+            
             try{
                 
-                const response = await axios.get('https://ph-clone.onrender.com/dashboard',{headers:{
-                    'Authorization': `Bearer ${token}`
-                }})
+                const response = await axios.get('https://ph-clone.onrender.com/dashboard')
             }catch(error){
                 console.log(error)
             }

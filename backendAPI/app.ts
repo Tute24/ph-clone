@@ -9,11 +9,13 @@ import userCreatedRoute from './src/routes/userCreatedRouter'
 import dashRoute from './src/routes/dashboardRouter'
 require('dotenv').config()
 const cors = require('cors')
+import { clerkMiddleware } from '@clerk/express'
 
 mongoose.connect(process.env.MONGODB_URI)
 
 app.use(cors())
 app.use(express.json())
+app.use(clerkMiddleware())
 app.use(productRouter)
 app.use(productsList)
 app.use(upVoteRoute)

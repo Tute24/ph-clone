@@ -1,4 +1,4 @@
-const { users } = require('@clerk/clerk-sdk-node')
+import {getAuth} from '@clerk/express'
 import { Request, Response, NextFunction } from 'express'
 
 export default async function AuthMiddleware(
@@ -14,7 +14,7 @@ export default async function AuthMiddleware(
     }
 
     const token = auth.split(' ')[1]
-    const clerkUser = await users.verifyToken(token)
+    const clerkUser = getAuth(req)
 
     if (!clerkUser) {
       res.status(403).json({ message: 'Forbidden!' })

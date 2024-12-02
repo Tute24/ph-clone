@@ -6,6 +6,7 @@ import productsList from './src/routes/productsListRouter'
 import upVoteRoute from './src/routes/upVoteRouter'
 import getAllRoute from './src/routes/getAllRouter'
 import userCreatedRoute from './src/routes/userCreatedRouter'
+import dashRoute from './src/routes/dashboardRouter'
 require('dotenv').config()
 const cors = require('cors')
 
@@ -18,6 +19,7 @@ app.use(productsList)
 app.use(upVoteRoute)
 app.use(getAllRoute)
 app.use(userCreatedRoute)
+app.use(dashRoute)
 
 
 const port = process.env.PORT || 3000

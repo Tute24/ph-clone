@@ -17,15 +17,16 @@ export default function Dashboard(){
             }
 
             const clerk = new Clerk(nextPublicKey)
+            await clerk.load()
             try{
-                await clerk.load()
+                
                 const token = await clerk.session?.getToken()
                 if(!token){
                     console.log('No token provided!')
                     return
                 }
                 console.log(token)
-                const response = await axios.get('/dashboard',{headers:{
+                const response = await axios.get('https://ph-clone.onrender.com/dashboard',{headers:{
                     'Authorization': `Bearer ${token}`
                 }})
             }catch(error){
@@ -41,7 +42,7 @@ export default function Dashboard(){
             <h2>Você não está logado!</h2>
         </SignedOut>
         <SignedIn>
-            <h2>Oi Mundo</h2>
+        <h2>Oi Mundo</h2>
         </SignedIn>
         </>
     )

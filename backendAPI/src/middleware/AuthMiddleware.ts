@@ -14,14 +14,14 @@ export default async function AuthMiddleware(
     }
 
     const token = auth.split(' ')[1]
-    const user = await users.getUser(token)
+    const clerkUser = await users.verifyToken(token)
 
-    if (!user) {
+    if (!clerkUser) {
       res.status(403).json({ message: 'Forbidden!' })
       return
     }
 
-    req.user = user
+    req.user = clerkUser
 
     next()
   } catch (error) {

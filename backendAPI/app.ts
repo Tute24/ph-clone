@@ -9,13 +9,23 @@ import userCreatedRoute from './src/routes/userCreatedRouter'
 import dashRoute from './src/routes/dashboardRouter'
 require('dotenv').config()
 const cors = require('cors')
-import { clerkMiddleware } from '@clerk/express'
+import {clerkMiddleware } from '@clerk/express'
+import { Clerk } from '@clerk/clerk-js'
 
 mongoose.connect(process.env.MONGODB_URI)
+const pKey = process.env.CLERK_PUBLISHABLE_KEY
+if(!pKey){
+    throw new Error('Publick Key not provided!')
+}
+const sKey = process.env.CLERK_SECRET_KEY
+if(!sKey){
+    throw new Error('Publick Key not provided!')
+}
+const clerk = new Clerk(pKey)
 
 app.use(cors())
 app.use(express.json())
-app.use(clerkMiddleware())
+app.use(clerkMiddleware(clerk))
 app.use(productRouter)
 app.use(productsList)
 app.use(upVoteRoute)

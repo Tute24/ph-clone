@@ -2,16 +2,7 @@ import express, {Request,Response} from 'express'
 const getAllRouter = express.Router()
 import Product from '../Schemas/product'
 import { Document } from 'mongoose'
-interface ProductType{
-        _id: string,
-        description:string,
-        summDesc: string,
-        productName:string,
-        productUrl: string,
-        tags:string[],
-        upVotes: number,
-        createdAt: Date
-}
+import ProductType from '../types/ProductType'
 
 getAllRouter.post('/getAll',async(req: Request,res: Response): Promise<any> =>{
 

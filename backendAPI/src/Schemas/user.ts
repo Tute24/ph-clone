@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import { unique } from "next/dist/build/utils";
 
 const userSchema: Schema = new mongoose.Schema({
     username:{
@@ -9,6 +10,11 @@ const userSchema: Schema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true
+    },
+    clerkId:{
+        type: String,
+        required: true,
+        unique:true
     },
     createdAt:{
         type: Date,

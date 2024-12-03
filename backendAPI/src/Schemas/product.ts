@@ -16,6 +16,10 @@ const productSchema: Schema = new mongoose.Schema({
         type: String,
         required: true
     },
+    createdBy:{
+        type: String,
+        required: true
+    },
     upVotes:{
         type: Number,
         default:0,

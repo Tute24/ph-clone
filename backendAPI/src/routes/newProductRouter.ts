@@ -2,12 +2,13 @@ import express, { Request, Response } from 'express'
 const newProductRouter = express.Router()
 import Product from '../Schemas/product'
 import OpenAI from 'openai'
-
+import { getAuth } from '@clerk/express'
 
 
 newProductRouter.post('/newProduct', async (req: Request, res: Response): Promise<any> =>{
         const openai = new OpenAI({apiKey: process.env.OPENAI_API_KEY})
         const {productName, description, productUrl,tags } = req.body
+        const clerkId = getAuth(req).userId
 
         try{
 
@@ -29,6 +30,7 @@ newProductRouter.post('/newProduct', async (req: Request, res: Response): Promis
                 description,
                 summDesc,
                 productUrl,
+                createdBy: clerkId,
                 tags
             })
              await newProduct.save()

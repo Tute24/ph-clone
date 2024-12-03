@@ -9,12 +9,14 @@ userCreatedRouter.post(
 
     const username = data.username
     const email_address = data.email_addresses[0]?.email_address
+    const clerkId = data.id
     console.log(username,email_address)
 
     try {
       const newUser = new User({
         username: username,
         email: email_address,
+        clerkId: clerkId
       })
       console.log('User created')
       await newUser.save()

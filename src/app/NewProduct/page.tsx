@@ -11,7 +11,6 @@ export default function NewProduct(){
     const {productInfos,setProductInfos} = useContextWrap()
     const {statusMessage,setStatusMessage} = useContextWrap()
     const {session} = useSession()
-    const [isSeassionLoaded,setIsSessionLoaded] = useState<boolean>(false)
     function handleInputChange(e:React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>){
         setProductInfos(
             {
@@ -23,11 +22,12 @@ export default function NewProduct(){
 
     async function handleSubmit(e:React.FormEvent){
         e.preventDefault()
-        if(session){
-            setIsSessionLoaded(true)
+        if(!session){
+            console.log(`There's no active session!`)
+            return
         }
         try{
-            if(isSeassionLoaded){
+            
                 const token = await session?.getToken()
                 const response = await axios.post('https://ph-clone.onrender.com/newProduct', productInfos, {headers:{
                     Authorization: `Bearer ${token}`
@@ -35,7 +35,6 @@ export default function NewProduct(){
             if(response){
                 console.log(productInfos)
                 setStatusMessage('Product added successfully!')
-            }
             }
             
         } catch(error){

@@ -10,8 +10,8 @@ interface ProductFormsProps{
             productUrl: string,
             tags:string[]
     },
-    onInputChange: (e:any)=> void
-    onSubmit: (e:any) => void
+    onInputChange: (e:React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>)=> void
+    onSubmit: (e:React.FormEvent) => void
 }
 
 export default function ProductForm({

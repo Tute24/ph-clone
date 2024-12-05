@@ -9,13 +9,21 @@ import ProdArrayProps from '@/types/ProdArrayProps'
 import ProductsList from '@/components/ProductsListDisplay/ProductsList'
 
 export default function HomePage() {
-  const { tagsArray, setTagsArray } = useContextWrap()
-  const { upVoteProduct, setUpVoteProduct } = useContextWrap()
-  const { modalDisplay } = useContextWrap()
-  const { selectedLi, setSelectedLi } = useContextWrap()
-  const { dialogRef, setDialogRef } = useContextWrap()
+  const {
+    tagsArray,
+    setTagsArray,
+    upVoteProduct,
+    setUpVoteProduct,
+    modalDisplay,
+    selectedLi,
+    setSelectedLi,
+    dialogRef,
+    setDialogRef,
+    rankingIndex,
+    setRankingIndex,
+  } = useContextWrap()
+
   const [productsArray, setProductsArray] = useState<ProdArrayProps[]>([])
-  const [rankingIndex, setRankingIndex] = useState(0)
 
   useEffect(() => {
     async function fetchProducts() {
@@ -61,11 +69,11 @@ export default function HomePage() {
 
   function openModal(product: string) {
     console.log(product)
-    modalDisplay?.current?.showModal()
+    modalDisplay.current?.showModal()
   }
 
   function closeModal() {
-    modalDisplay?.current?.close()
+    modalDisplay.current?.close()
   }
 
   return (

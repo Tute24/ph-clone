@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import DialogModal from '@/components/DialogModal/DialogModal'
 import ProdArrayProps from '@/types/ProdArrayProps'
 import ProductsList from '@/components/ProductsListDisplay/ProductsList'
+import Categories from '@/components/Categories/Categories'
 
 export default function HomePage() {
   const {
@@ -33,8 +34,8 @@ export default function HomePage() {
         )
         if (response) {
           const productsData: ProdArrayProps[] = response.data.products
-          const tagsFetch: string[] = productsData.flatMap((e) =>
-            e.tags.flatMap((tag) => tag.split(/,\s*/))
+          const tagsFetch: string[] = productsData.flatMap((product) =>
+            product.tags.flatMap((tag) => tag.split(/,\s*/))
           )
           setProductsArray(productsData)
           const uniqueTags = [...new Set(tagsFetch)]
@@ -91,18 +92,9 @@ export default function HomePage() {
           />
         </div>
         <div>
-          <h2 className="flex justify-center p-4 font-bold">Categories:</h2>
-          <ul className="flex flex-col m-auto">
-            {tagsArray.map((tag) => (
-              <li className="p-2" key={tag}>
-                <Link href={`/tags/${tag}`}>
-                  <span className="text-sm text-orangeText hover:underline cursor-pointer">
-                    {tag}
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <Categories
+            tagsArray={tagsArray}
+          />
         </div>
         <div>
           <DialogModal

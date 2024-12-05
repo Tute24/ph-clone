@@ -8,6 +8,7 @@ import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import ProdArrayProps from "@/types/ProdArrayProps"
 import DialogModal from "@/components/DialogModal/DialogModal"
+import ProductsList from "@/components/ProductsListDisplay/ProductsList"
 
 export default function TagPage(){
 
@@ -34,7 +35,8 @@ export default function TagPage(){
             try{
                 const response = await axios.post('https://ph-clone.onrender.com/getAll',decodedTag)
                 const products = response.data.products
-                setSelectedTagArray(products)               
+                if(products){
+                setSelectedTagArray(products)  }             
             }catch(error){
                 console.log(error)      
             }
@@ -59,7 +61,7 @@ function displayUpVote(productID?:string){
     }
 }
 
-function openModal(){
+function openModal(product: string){
     modalDisplay?.current?.showModal()
 }
 
@@ -72,61 +74,15 @@ function closeModal(){
             
             <div className="w-9/12">
                 <h1 className="flex justify-center p-4 font-bold">{decodedTag.decoded} products: </h1>
-                <ul className="flex flex-col text-center items-center">
-                    {selectedTagArray?.sort((a,b) => b.upVotes - a.upVotes).map((product) =>  (
-                            <div key={product._id} className="p-5 border-gray-400 w-3/5">
-                                <li onClick={()=>{
-                                    openModal()
-                                    setSelectedLi(product._id)
-                                    setRankingIndex(selectedTagArray.indexOf(product)+1)
-                                }} key={product._id} className="flex flex-col justify-center border-solid border-2 shadow-md rounded-lg cursor-pointer hover:shadow-lg" >
-                                        <h2 className="font-bold p-2">{product.productName}</h2>
-                                        <div className="flex flex-row justify-between gap-4 items-center ml-5 mr-5 ">
-                                            <p className="text-sm">About - {product.summDesc}</p>
-                                            <Link onClick={(event)=>{
-                                                event.stopPropagation()
-                                            }} href={product.productUrl} target="blank" className="  text-orange-500 hover:underline ">
-                                            Official Website
-                                            </Link>
-                                            <SignedOut>
-                                                <SignInButton mode="modal">
-                                                <button className="px-2 border-solid border-2 border-gray-200 rounded-md" type="button" >
-                                                    <img className="h-5 w-5 p-0" src="/upArrow.png" alt="upVote" />
-                                                    <span>
-                                                        {product.upVotes}
-                                                    </span>
-                                                </button>
-                                                </SignInButton>
-                                            </SignedOut>
-                                            <SignedIn>
-                                                <button type="button" className="px-2 border-solid border-2 border-gray-200 rounded-md" onClick={(event)=>{
-                                                    displayUpVote(product._id);
-                                                    setUpVoteProduct({product: product._id})
-                                                    event.stopPropagation()
-                                                }}>
-                                                    <img className="h-5 w-5 p-0" src="/upArrow.png" alt="upVote" />
-                                                    <span className="text-orange-500">
-                                                        {product.upVotes}
-                                                    </span>
-                                                </button>
-                                            </SignedIn>
-                                        </div>
-                                        <div className="text-xs text-orange-500 p-2 flex flex-row gap-2">
-                                            {product.tags.flatMap(tag => tag.split(/,\s*/)).map((tag,index)=>(
-                                                <Link href={`/tags/${tag}`} key={`${product._id} - ${index}`}>
-                                                    <span className="hover:underline cursor-pointer">
-                                                        {tag}
-                                                    </span>
-                                                </Link>
-                                            ))}
-                                        </div>
-                                </li>
-                            </div>
-
-                            )
-                        )
-                    }
-                </ul>
+                {selectedTagArray && <ProductsList
+                    productsArray={selectedTagArray}
+                    openModal={openModal}
+                    setSelectedLi={setSelectedLi}
+                    setRankingIndex={setRankingIndex}
+                    setUpVoteProduct={setUpVoteProduct}
+                    displayUpVote={displayUpVote}
+                />}
+                
             </div>
             <div>
             <h2 className="flex justify-center p-4 font-bold">Categories:</h2>

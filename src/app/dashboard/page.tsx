@@ -7,6 +7,7 @@ import ProdArrayProps from '@/types/ProdArrayProps'
 import { useContextWrap } from '@/contexts/ContextWrap'
 import ProductsList from '@/components/ProductsListDisplay/ProductsList'
 import DialogModal from '@/components/DialogModal/DialogModal'
+import Categories from '@/components/Categories/Categories'
 
 export default function Dashboard() {
   const { session } = useSession()
@@ -19,6 +20,8 @@ export default function Dashboard() {
     rankingIndex,
     selectedLi,
     setDialogRef,
+    tagsArray,
+    setTagsArray,
   } = useContextWrap()
   const [isSeassionLoaded, setIsSessionLoaded] = useState<boolean>(false)
   const [productsArray, setProductsArray] = useState<ProdArrayProps[]>()
@@ -39,7 +42,13 @@ export default function Dashboard() {
               },
             }
           )
-          const products = response.data.products
+          const products: ProdArrayProps[] = response.data.products
+          const tagsFetch: string[] = products.flatMap((product) =>
+            product.tags.flatMap((tag) => tag.split(/,\s*/))
+          )
+          setProductsArray(products)
+          const uniqueTags = [...new Set(tagsFetch)]
+          setTagsArray(uniqueTags)
           setProductsArray(products)
           console.log(response.data)
         }
@@ -101,6 +110,9 @@ export default function Dashboard() {
                   displayUpVote={displayUpVote}
                 />
               )}
+            </div>
+            <div>
+              <Categories tagsArray={tagsArray} />
             </div>
             <div>
               <DialogModal

@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react'
 import ProdArrayProps from '@/types/ProdArrayProps'
 import DialogModal from '@/components/DialogModal/DialogModal'
 import ProductsList from '@/components/ProductsListDisplay/ProductsList'
+import Categories from '@/components/Categories/Categories'
 
 export default function TagPage() {
   const { tag } = useParams<{ tag: string }>()
@@ -44,7 +45,7 @@ export default function TagPage() {
           'https://ph-clone.onrender.com/getAll',
           decodedTag
         )
-        const products = response.data.products
+        const products: ProdArrayProps[] = response.data.products
         if (products) {
           setSelectedTagArray(products)
         }
@@ -102,18 +103,7 @@ export default function TagPage() {
         )}
       </div>
       <div>
-        <h2 className="flex justify-center p-4 font-bold">Categories:</h2>
-        <ul className="flex flex-row m-auto">
-          {tagsArray.map((tag) => (
-            <li className="p-2" key={tag}>
-              <Link href={`/tags/${tag}`}>
-                <span className="text-sm text-orange-500 hover:underline cursor-pointer">
-                  {tag}
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <Categories tagsArray={tagsArray} />
       </div>
       <div>
         <DialogModal

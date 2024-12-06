@@ -6,11 +6,12 @@ interface ProductFormsProps{
     productInfos:{
             productName: string,
             description: string,
+            summDesc: string,
             productUrl: string,
             tags:string[]
     },
-    onInputChange: (e:any)=> void
-    onSubmit: (e:any) => void
+    onInputChange: (e:React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>)=> void
+    onSubmit: (e:React.FormEvent) => void
 }
 
 export default function ProductForm({
@@ -21,14 +22,14 @@ export default function ProductForm({
         ProductFormsProps
     ){
     
-    const {statusMessage,setStatusMessage} = useContextWrap()
+    const {statusMessage} = useContextWrap()
 
     return (
         <div className="flex flex-col items-center p-4">
                 <h2>
                     Add a new product to the site's products list:
                 </h2>
-                <form className="flex flex-col items-center" onSubmit={onSubmit} >
+                <form className="flex flex-col items-center w-3/5" onSubmit={onSubmit} >
                     <label htmlFor="productName">
                         Product name:
                     </label>
@@ -36,7 +37,7 @@ export default function ProductForm({
                     <label htmlFor="description">
                         Product description:
                     </label>
-                    <input className="text-center w-full solid border-black border-2" id="description" type="text" name="description" value={productInfos.description} onChange={onInputChange}/>
+                    <textarea className="text-center text-sm w-full solid border-black border-2" id="description" name="description" value={productInfos.description} onChange={onInputChange}/>
                     <label htmlFor="productUrl">
                         The URL to your product's webpage:
                     </label>

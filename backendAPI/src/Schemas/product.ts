@@ -9,7 +9,14 @@ const productSchema: Schema = new mongoose.Schema({
         type: String,
         required:true
     },
+    summDesc:{
+        type: String,
+    },
     productUrl:{
+        type: String,
+        required: true
+    },
+    createdBy:{
         type: String,
         required: true
     },

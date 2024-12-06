@@ -1,133 +1,112 @@
 'use client'
 
-import { SignedOut, SignInButton } from "@clerk/clerk-react"
-import { SignedIn } from "@clerk/nextjs"
-import axios from "axios"
-import Link from "next/link"
-import { useEffect, useState } from "react"
+import { useContextWrap } from '@/contexts/ContextWrap'
+import axios from 'axios'
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
+import DialogModal from '@/components/DialogModal/DialogModal'
+import ProdArrayProps from '@/types/ProdArrayProps'
+import ProductsList from '@/components/ProductsListDisplay/ProductsList'
+import Categories from '@/components/Categories/Categories'
 
-export default function HomePage(){
+export default function HomePage() {
+  const {
+    tagsArray,
+    setTagsArray,
+    upVoteProduct,
+    setUpVoteProduct,
+    modalDisplay,
+    selectedLi,
+    setSelectedLi,
+    dialogRef,
+    setDialogRef,
+    rankingIndex,
+    setRankingIndex,
+  } = useContextWrap()
 
-    const [productsArray, setProductsArray] = useState([])
-    const [tagsArray, setTagsArray] = useState<string[]>([])
-    const [mouseOverProduct,setMouseOverProduct] = useState<string>('')
-    const [upVoteProduct, setUpVoteProduct] = useState({
-        product: ''
-    })
+  const [productsArray, setProductsArray] = useState<ProdArrayProps[]>([])
 
-    useEffect(()=>{
-        async function fetchProducts(){
-            try{
-                const response = await axios.get('http://localhost:3000/productsList')
-                if(response){
-                    const productsData = response.data.products
-                    const tagsFetch: string[] = productsData.flatMap((e:{
-                        _id: string,
-                        description:string,
-                        productName:string,
-                        productUrl: string,
-                        tags:string[],
-                        upVotes: number
-                    } ) => e.tags.flatMap(tag => tag.split(/,\s*/)))
-                    console.log(tagsFetch)
-                    console.log(productsData)
-                    setProductsArray(productsData)
-                    setTagsArray([... tagsArray])
-
-                    const uniqueTags = [... new Set (tagsFetch)]
-                    setTagsArray(uniqueTags)
-                    
-                }
-            }catch(error){
-                console.log(error)
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const response = await axios.get(
+          'https://ph-clone.onrender.com/productsList'
+        )
+        if (response) {
+          const productsData: ProdArrayProps[] = response.data.products
+          const tagsFetch: string[] = productsData.flatMap((product) =>
+            product.tags.flatMap((tag) => tag.split(/,\s*/))
+          )
+          setProductsArray(productsData)
+          const uniqueTags = [...new Set(tagsFetch)]
+          setTagsArray(uniqueTags)
         }
+      } catch (error) {
+        console.log(error)
+      }
     }
     fetchProducts()
-},[])
+  }, [])
 
-    useEffect(()=>{
-         async function voteUp(){
-            console.log(upVoteProduct)
-            try{
-                const response = await axios.post('http://localhost:3000/upVote',upVoteProduct)
-            }catch(error){
-
-            }
-            
+  useEffect(() => {
+    function getRef() {
+      const dialogRef = productsArray.find(
+        (reference) => reference._id === selectedLi
+      )
+      if (dialogRef) {
+        setDialogRef(dialogRef)
+      }
+      console.log(dialogRef)
     }
-    voteUp()
-    },[upVoteProduct])
+    getRef()
+  }, [selectedLi])
 
-    return(
-        <>
-        <div className="flex flex-row ">
-            <div className="w-9/12">
-                <h1 className="flex justify-center p-4 font-bold">Products:</h1>
-                <ul className="flex flex-col text-center items-center">
-                    {productsArray.map((e:{
-                        _id: string,
-                        description:string,
-                        productName:string,
-                        productUrl: string,
-                        tags:string[],
-                        upVotes: number
-                    }) => (
-                            <div id={e.productName}  key={e._id} className="p-5 border-gray-400 w-3/5">
-                                <li key={e._id} className="flex flex-col justify-center border-solid border-2 shadow-md rounded-lg hover:shadow-lg" >
-                                    <h2 className="font-bold p-2">{e.productName}</h2>
-                                    <div className="flex flex-row justify-evenly items-center ">
-                                        
-                                        <p >About: {e.description}</p>
-                                        <Link href={e.productUrl} target="blank" className="  text-orange-500 hover:underline ">Official Website</Link>
-                                        <SignedOut>
-                                            <SignInButton mode="modal">
-                                                <button className="px-2 border-solid border-2 border-gray-200 rounded-md" type="button" >
-                                                    <img className="h-5 w-5 p-0" src="/upArrow.png" alt="upVote" />
-                                                    <span>
-                                                        {e.upVotes}
-                                                    </span>
-                                                </button>
-                                            </SignInButton>
-                                        </SignedOut>
-                                        <SignedIn>
-                                            <input type="hidden" name="product" value={e._id} />
-                                            <button onClick={()=>{
-                                setUpVoteProduct({
-                                    product: e._id
-                                }); e.upVotes++
-                            }} className="px-2 border-solid border-2 border-gray-200 rounded-md" type="button">
-                                                <img className="h-5 w-5 p-0" src="/upArrow.png" alt="upVote" />
-                                                <span className="text-orange-500">
-                                                    {e.upVotes}
-                                                </span>
-                                            </button>
-                                        </SignedIn>
-                                    </div >
-                                    <div className="text-xs text-orange-500 p-2 flex flex-row gap-2">
+  function displayUpVote(productID?: string) {
+    const isThere = productsArray.find((product) => product._id === productID)
+    if (isThere && isThere.upVotes) {
+      isThere.upVotes++
+    }
+  }
 
-                                        {e.tags.flatMap(tag => tag.split(/,\s*/)).map((item, index) =>(
-                                                <span className="hover:underline cursor-pointer" key={`${e._id}-${index}`}>{item}</span>
-                                            ))}
-                                    </div>
-                                </li>
-                            </div>
-                            )
-                        )
-                            }
-                    
-                </ul>
-            </div>
-            <div>
-                <h2 className="flex justify-center p-4 font-bold">Categories:</h2>
-                <ul className="flex flex-row m-auto">
-                    {tagsArray.map(e =>(
-                    <li className="p-2" key={e}>
-                        <span className="text-sm text-orange-500 hover:underline cursor-pointer">{e}</span>
-                    </li>
-                    ))}
-                </ul>
-            </div>
+  function openModal(product: string) {
+    console.log(product)
+    modalDisplay.current?.showModal()
+  }
+
+  function closeModal() {
+    modalDisplay.current?.close()
+  }
+
+  return (
+    <>
+      <div className="flex flex-row ">
+        <div className="w-9/12">
+          <h1 className="flex justify-center p-4 font-bold">Products:</h1>
+          <ProductsList
+            productsArray={productsArray}
+            openModal={openModal}
+            setSelectedLi={setSelectedLi}
+            setRankingIndex={setRankingIndex}
+            setUpVoteProduct={setUpVoteProduct}
+            displayUpVote={displayUpVote}
+          />
         </div>
-        </>
-    )
+        <div>
+          <Categories
+            tagsArray={tagsArray}
+          />
+        </div>
+        <div>
+          <DialogModal
+            dialogRef={dialogRef}
+            clickClose={closeModal}
+            modalDisplay={modalDisplay}
+            rankingIndex={rankingIndex}
+            setUpVote={setUpVoteProduct}
+            displayUpVote={displayUpVote}
+          />
+        </div>
+      </div>
+    </>
+  )
 }

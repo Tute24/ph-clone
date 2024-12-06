@@ -10,14 +10,14 @@ const userSchema: Schema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    password:{
+    clerkId:{
         type: String,
-        required: true
+        required: true,
+        unique:true
     },
     createdAt:{
         type: Date,
-        default: Date.now(),
-        required: true
+        default: Date.now()
     }
 })
 

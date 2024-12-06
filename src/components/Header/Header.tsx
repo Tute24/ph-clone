@@ -1,5 +1,5 @@
 import { SignedIn, SignedOut, SignIn, SignInButton, SignUp, SignUpButton, UserButton, UserProfile, useUser } from '@clerk/nextjs'
-import { currentUser, User } from '@clerk/nextjs/server'
+import { currentUser } from '@clerk/nextjs/server'
 import Link from 'next/link'
 
 export default async function Header (){

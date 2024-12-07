@@ -14,7 +14,8 @@ export default {
         orange1: "#FF5C5C",
         orange2: "#FF776B",
         orangeText: "#FF6154",
-        vibrantBlue: "#627089"
+        vibrantBlue: "#627089",
+        darkerOrange: "#E65100"
       },
     },
   },

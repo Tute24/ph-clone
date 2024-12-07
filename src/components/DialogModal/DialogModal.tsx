@@ -60,10 +60,10 @@ export default function DialogModal({
               <SignInButton mode="modal">
                 <button
                   onClick={clickClose}
-                  className="flex flex-row justify-between px-5 sm:py-3 sm:px-8 text-white font-bold gap-3 bg-orange1 rounded-md text-sm"
+                  className="flex flex-row justify-between text-xs py-2 px-6  sm:py-3 sm:px-8 text-white font-bold gap-3 bg-orange1 rounded-md sm:text-sm items-center hover:bg-darkerOrange"
                 >
                   <img
-                    className="h-5 w-5 p-0 "
+                    className="h-3 w-3 sm:h-5 sm:w-5 p-0 -ml-2  "
                     src="/upArrow.png"
                     alt="upVote"
                   />
@@ -98,7 +98,7 @@ export default function DialogModal({
               {dialogRef?.tags.flatMap((tag) =>
                 tag.split(/,\s*/).map((item, index) => (
                   <li
-                    className="bg-gray-300 rounded-2xl px-2 py-1 text-gray-600 font-semibold "
+                    className="bg-gray-300 rounded-2xl px-2 py-1 text-gray-600 font-semibold hover:text-darkerOrange "
                     key={`${index}-${item}`}
                   >
                     <Link href={`/tags/${item}`}>{item}</Link>

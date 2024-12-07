@@ -8,6 +8,7 @@ import { useContextWrap } from '@/contexts/ContextWrap'
 import ProductsList from '@/components/ProductsListDisplay/ProductsList'
 import DialogModal from '@/components/DialogModal/DialogModal'
 import Categories from '@/components/Categories/Categories'
+import Unauthorized from '@/components/UnauthorizedLayout/Unauthorized'
 
 export default function Dashboard() {
   const { session } = useSession()
@@ -91,7 +92,7 @@ export default function Dashboard() {
   return (
     <>
       <SignedOut>
-        <h2>Você não está logado!</h2>
+        <Unauthorized/>
       </SignedOut>
       <SignedIn>
         <>

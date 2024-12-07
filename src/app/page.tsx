@@ -79,8 +79,8 @@ export default function HomePage() {
 
   return (
     <>
-      <div className="flex flex-row ">
-        <div className="w-9/12">
+      <div className="flex flex-col sm:flex-row ">
+        <div className=" sm:w-9/12">
           <h1 className="flex justify-center p-4 font-bold">Products:</h1>
           <ProductsList
             productsArray={productsArray}

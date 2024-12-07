@@ -1,5 +1,27 @@
 {
-  "node": {},
+  "node": {
+    "7fa37f40fc19e01edb13cc5671dcf6d909f9a98972": {
+      "workers": {
+        "app/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CProjects%5C%5Cproduct%20hunt%20clone%5C%5Cph-clone%5C%5Cnode_modules%5C%5C%40clerk%5C%5Cnextjs%5C%5Cdist%5C%5Cesm%5C%5Capp-router%5C%5Cserver-actions.js%22%2C%5B%5B%227fa37f40fc19e01edb13cc5671dcf6d909f9a98972%22%2C%22invalidateCacheAction%22%5D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        },
+        "app/NewProduct/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CProjects%5C%5Cproduct%20hunt%20clone%5C%5Cph-clone%5C%5Cnode_modules%5C%5C%40clerk%5C%5Cnextjs%5C%5Cdist%5C%5Cesm%5C%5Capp-router%5C%5Cserver-actions.js%22%2C%5B%5B%227fa37f40fc19e01edb13cc5671dcf6d909f9a98972%22%2C%22invalidateCacheAction%22%5D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        },
+        "app/dashboard/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CProjects%5C%5Cproduct%20hunt%20clone%5C%5Cph-clone%5C%5Cnode_modules%5C%5C%40clerk%5C%5Cnextjs%5C%5Cdist%5C%5Cesm%5C%5Capp-router%5C%5Cserver-actions.js%22%2C%5B%5B%227fa37f40fc19e01edb13cc5671dcf6d909f9a98972%22%2C%22invalidateCacheAction%22%5D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/page": "action-browser",
+        "app/NewProduct/page": "action-browser",
+        "app/dashboard/page": "action-browser"
+      }
+    }
+  },
   "edge": {},
   "encryptionKey": "d+67biZ761fOUeWE5mb4jFg1ACY0KtGEYxhrUotpB90="
 }

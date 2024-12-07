@@ -9,7 +9,7 @@ export default async function Header (){
     return (
         <>
         <div className='py-4'>
-            <nav className=' flex flex-row items-center justify-evenly w-full'>
+            <nav className=' flex flex-col justify-center items-center text-xs sm:justify-evenly sm:flex-row w-full sm:text-base'>
                 <div className='flex items-center'>
                 <Link href='/'><button type="button" className="px-5"><img
                         className="h-10 w-10 p-0 "
@@ -29,8 +29,10 @@ export default async function Header (){
                     <SignInButton><button className='px-5 py-2 bg-orange1 text-white font-bold rounded-3xl'>Sign In</button></SignInButton>
                 </SignedOut>
                 <SignedIn>
+                    <div className='flex flex-row gap-3 items-center'>
                     <h2 >Welcome, {username}!</h2>
                     <UserButton></UserButton>
+                    </div>
                 </SignedIn>
                 </div>
             </nav>

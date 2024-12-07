@@ -83,10 +83,13 @@ export default function Dashboard() {
   }
 
   function displayUpVote(productID?: string) {
-    const isThere = productsArray?.find((product) => product._id === productID)
-    if (isThere && isThere.upVotes) {
-      isThere.upVotes++
-    }
+    setProductsArray((current) =>
+      current?.map((product) =>
+        product._id === productID
+          ? { ...product, upVotes: product.upVotes + 1 }
+          : product
+      )
+    )
   }
 
   return (

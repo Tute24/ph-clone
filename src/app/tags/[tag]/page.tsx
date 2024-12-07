@@ -69,12 +69,13 @@ export default function TagPage() {
   }, [selectedLi])
 
   function displayUpVote(productID?: string) {
-    const isThere = selectedTagArray?.find(
-      (product) => product._id === productID
+    setSelectedTagArray((current) =>
+      current?.map((product) =>
+        product._id === productID
+          ? { ...product, upVotes: product.upVotes + 1 }
+          : product
+      )
     )
-    if (isThere && isThere.upVotes) {
-      isThere.upVotes++
-    }
   }
 
   function openModal(product: string) {

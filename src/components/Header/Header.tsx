@@ -1,4 +1,4 @@
-import { SignedIn, SignedOut, SignIn, SignInButton, SignUp, SignUpButton, UserButton, UserProfile, useUser } from '@clerk/nextjs'
+import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton} from '@clerk/nextjs'
 import { currentUser } from '@clerk/nextjs/server'
 import Link from 'next/link'
 
@@ -25,8 +25,8 @@ export default async function Header (){
                 </div>
                 <div className=''>
                 <SignedOut>
-                    <SignUpButton><button className=' font-semibold border-solid border-gray-200 border-2 rounded-3xl px-5 py-2 mr-5'>Register</button></SignUpButton>
-                    <SignInButton><button className='px-5 py-2 bg-orange1 text-white font-bold rounded-3xl'>Sign In</button></SignInButton>
+                    <SignUpButton><button className=' font-semibold border-solid border-gray-200 border-2 rounded-3xl px-5 py-2 mr-5 hover:bg-gray-200'>Register</button></SignUpButton>
+                    <SignInButton><button className='px-5 py-2 bg-orange1 text-white font-bold rounded-3xl hover:bg-darkerOrange'>Log In</button></SignInButton>
                 </SignedOut>
                 <SignedIn>
                     <div className='flex flex-row gap-3 items-center'>

@@ -8,6 +8,7 @@ import { useContextWrap } from '@/contexts/ContextWrap'
 import ProductsList from '@/components/ProductsListDisplay/ProductsList'
 import DialogModal from '@/components/DialogModal/DialogModal'
 import Categories from '@/components/Categories/Categories'
+import Unauthorized from '@/components/UnauthorizedLayout/Unauthorized'
 
 export default function Dashboard() {
   const { session } = useSession()
@@ -82,16 +83,19 @@ export default function Dashboard() {
   }
 
   function displayUpVote(productID?: string) {
-    const isThere = productsArray?.find((product) => product._id === productID)
-    if (isThere && isThere.upVotes) {
-      isThere.upVotes++
-    }
+    setProductsArray((current) =>
+      current?.map((product) =>
+        product._id === productID
+          ? { ...product, upVotes: product.upVotes + 1 }
+          : product
+      )
+    )
   }
 
   return (
     <>
       <SignedOut>
-        <h2>Você não está logado!</h2>
+        <Unauthorized/>
       </SignedOut>
       <SignedIn>
         <>

@@ -6,10 +6,10 @@ import { SignedIn, SignedOut, SignInButton, useSession } from "@clerk/nextjs";
 import axios from "axios";
 import Unauthorized from "@/components/UnauthorizedLayout/Unauthorized";
 
+
 export default function NewProduct(){
 
-    const {productInfos,setProductInfos} = useContextWrap()
-    const {statusMessage,setStatusMessage} = useContextWrap()
+    const {productInfos,setProductInfos, statusMessage,setStatusMessage, isLoading,setIsLoading} = useContextWrap()
     const {session} = useSession()
     function handleInputChange(e:React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>){
         setProductInfos(
@@ -27,19 +27,22 @@ export default function NewProduct(){
             return
         }
         try{
-            
+                setIsLoading(true)
                 const token = await session?.getToken()
                 const response = await axios.post('https://ph-clone.onrender.com/newProduct', productInfos, {headers:{
                     Authorization: `Bearer ${token}`
                 }})
             if(response){
                 console.log(productInfos)
+                
                 setStatusMessage('Product added successfully!')
             }
             
         } catch(error){
             console.log(error)
             setStatusMessage(`Couldn't add the product.`)
+        } finally{
+            setIsLoading(false)
         }
     }
     

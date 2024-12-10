@@ -11,6 +11,7 @@ interface ListProps {
   setRankingIndex: (value: number) => void
   setUpVoteProduct: (value: { product: string }) => void
   displayUpVote: (value: string) => void
+  voterCheckHandle: (value:string) => void
 }
 
 export default function ProductsList({
@@ -20,6 +21,7 @@ export default function ProductsList({
   setRankingIndex,
   setUpVoteProduct,
   displayUpVote,
+  voterCheckHandle
 }: ListProps) {
   
   return (
@@ -84,6 +86,7 @@ export default function ProductsList({
                         product: product._id,
                       })
                       displayUpVote(product._id)
+                      voterCheckHandle(product._id)
                     }}
                     className="px-2 border-solid border-2 border-gray-200 rounded-md"
                     type="button"

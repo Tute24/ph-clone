@@ -41,7 +41,9 @@ interface ContextWrapProps {
   rankingIndex: any
   setRankingIndex: (value:any) => void
   isLoading: boolean
-  setIsLoading: (value:boolean)=> void
+  setIsLoading: (value:boolean)=> void,
+  voter: string,
+  setVoter: (value:string) => void
 }
 
 const ContextWrap = createContext<ContextWrapProps | undefined>(undefined)
@@ -76,6 +78,7 @@ export function ContextWrapProvider({
   const [dialogRef,setDialogRef]= useState<ProdArrayProps>()
   const [rankingIndex,setRankingIndex] = useState(0)
   const [isLoading,setIsLoading] = useState(false)
+  const [voter, setVoter] = useState<string>('')
 
   useEffect(() => {
     const storagedTags = localStorage.getItem('tags')
@@ -104,7 +107,7 @@ export function ContextWrapProvider({
       }
     }
     voteUp()
-  }, [upVoteProduct])
+  }, [upVoteProduct,voter])
 
   return (
     <ContextWrap.Provider
@@ -125,7 +128,9 @@ export function ContextWrapProvider({
         rankingIndex,
         setRankingIndex,
         isLoading,
-        setIsLoading
+        setIsLoading,
+        voter,
+        setVoter
       }}
     >
       {children}

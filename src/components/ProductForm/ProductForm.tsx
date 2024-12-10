@@ -1,6 +1,7 @@
 'use client'
 
 import { useContextWrap } from '@/contexts/ContextWrap'
+import ClipLoader from "react-spinners/ClipLoader"
 
 interface ProductFormsProps {
   productInfos: {
@@ -21,7 +22,7 @@ export default function ProductForm({
   onInputChange,
   onSubmit,
 }: ProductFormsProps) {
-  const { statusMessage } = useContextWrap()
+  const { statusMessage, isLoading } = useContextWrap()
 
   return (
     <div className="flex justify-center items-center ">
@@ -73,10 +74,11 @@ export default function ProductForm({
           />
           </div>
           <button
-            className="text-sm w-3/5 sm:text-base sm:w-2/5 bg-orange1 font-bold rounded-md flex justify-center m-auto py-2 text-white"
+            className="text-sm w-3/5 sm:text-base sm:w-3/5 bg-orange1 font-bold rounded-full px-2 flex justify-center m-auto py-2 text-white"
             type="submit"
+            disabled={isLoading}
           >
-            Add new product
+            {isLoading? <ClipLoader color='#FFFFFF' size={25}/>: `Add new product`}
           </button>
         </form>
         <span className="text-green-600 p-2">{statusMessage}</span>

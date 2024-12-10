@@ -71,6 +71,22 @@ export default function HomePage() {
     )
   }
 
+  function displayUpVoteModal(productID?: string) {
+    if(dialogRef && dialogRef._id===productID){
+    setDialogRef({...dialogRef,
+      upVotes: dialogRef.upVotes+1
+    }
+    )
+    setProductsArray((current) =>
+      current?.map((product) =>
+        product._id === productID
+          ? { ...product, upVotes: product.upVotes + 1 }
+          : product
+      )
+    )
+  }
+  }
+
   function openModal(product: string) {
     console.log(product)
     modalDisplay.current?.showModal()
@@ -106,7 +122,7 @@ export default function HomePage() {
             modalDisplay={modalDisplay}
             rankingIndex={rankingIndex}
             setUpVote={setUpVoteProduct}
-            displayUpVote={displayUpVote}
+            displayUpVote={displayUpVoteModal}
           />
         </div>
       </div>

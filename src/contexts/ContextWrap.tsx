@@ -40,6 +40,8 @@ interface ContextWrapProps {
   setDialogRef: (value: ProdArrayProps) => void
   rankingIndex: any
   setRankingIndex: (value:any) => void
+  isLoading: boolean
+  setIsLoading: (value:boolean)=> void
 }
 
 const ContextWrap = createContext<ContextWrapProps | undefined>(undefined)
@@ -73,6 +75,7 @@ export function ContextWrapProvider({
   const [selectedLi,setSelectedLi] = useState<string>('')
   const [dialogRef,setDialogRef]= useState<ProdArrayProps>()
   const [rankingIndex,setRankingIndex] = useState(0)
+  const [isLoading,setIsLoading] = useState(false)
 
   useEffect(() => {
     const storagedTags = localStorage.getItem('tags')
@@ -120,7 +123,9 @@ export function ContextWrapProvider({
         dialogRef,
         setDialogRef,
         rankingIndex,
-        setRankingIndex
+        setRankingIndex,
+        isLoading,
+        setIsLoading
       }}
     >
       {children}

@@ -78,6 +78,22 @@ export default function TagPage() {
     )
   }
 
+  function displayUpVoteModal(productID?: string) {
+    if(dialogRef && dialogRef._id===productID){
+    setDialogRef({...dialogRef,
+      upVotes: dialogRef.upVotes+1
+    }
+    )
+    setSelectedTagArray((current) =>
+      current?.map((product) =>
+        product._id === productID
+          ? { ...product, upVotes: product.upVotes + 1 }
+          : product
+      )
+    )
+  }
+  }
+
   function openModal(product: string) {
     modalDisplay?.current?.showModal()
   }
@@ -113,7 +129,7 @@ export default function TagPage() {
           modalDisplay={modalDisplay}
           rankingIndex={rankingIndex}
           setUpVote={setUpVoteProduct}
-          displayUpVote={displayUpVote}
+          displayUpVote={displayUpVoteModal}
         />
       </div>
     </div>

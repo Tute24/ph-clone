@@ -25,6 +25,10 @@ const productSchema: Schema = new mongoose.Schema({
         default:0,
         
     },
+    voters: {
+        type: [String],
+        default: []
+    },
     createdAt:{
         type: Date,
         default: Date.now(),

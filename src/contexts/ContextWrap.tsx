@@ -100,7 +100,9 @@ export function ContextWrapProvider({
       try {
         const response = await axios.post(
           'https://ph-clone.onrender.com/upVote',
-          upVoteProduct
+          upVoteProduct,{headers:{
+            'Authorization': `Bearer: ${voter}`
+          }}
         )
       } catch (error) {
         console.log(error)

@@ -16,7 +16,6 @@ export default function TagPage() {
   const decodedTag = { decoded: decodeURIComponent(tag) }
   const {
     modalDisplay,
-    upVoteProduct,
     setUpVoteProduct,
     dialogRef,
     setDialogRef,
@@ -25,13 +24,9 @@ export default function TagPage() {
     rankingIndex,
     setRankingIndex,
     tagsArray,
-    setTagsArray,
-    setVoter
   } = useContextWrap()
 
   const [selectedTagArray, setSelectedTagArray] = useState<ProdArrayProps[]>()
-  const {session} = useSession()
-  const [isSessionLoaded, setIsSessionLoaded] = useState<boolean>(false)
 
   useEffect(() => {
     if (tagsArray.length === 0) {
@@ -58,22 +53,6 @@ export default function TagPage() {
     }
     getProductsWithTag()
   }, [])
-
-  async function voterCheckHandler (productID: string){
-    if(session){
-      setIsSessionLoaded(true)
-    }
-    try{
-      if(isSessionLoaded){
-        const token = await session?.getToken()
-        if(token){
-          setVoter(token)
-        }
-      }
-    }catch(error){
-      console.log(error)
-    }
-  }
 
   useEffect(() => {
     function getRef() {
@@ -135,7 +114,7 @@ export default function TagPage() {
             setRankingIndex={setRankingIndex}
             setUpVoteProduct={setUpVoteProduct}
             displayUpVote={displayUpVote}
-            voterCheckHandler={voterCheckHandler}
+
           />
         )}
       </div>

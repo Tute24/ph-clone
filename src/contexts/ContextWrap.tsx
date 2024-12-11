@@ -42,8 +42,6 @@ interface ContextWrapProps {
   setRankingIndex: (value:any) => void
   isLoading: boolean
   setIsLoading: (value:boolean)=> void,
-  voter: string,
-  setVoter: (value:string) => void
 }
 
 const ContextWrap = createContext<ContextWrapProps | undefined>(undefined)
@@ -78,7 +76,6 @@ export function ContextWrapProvider({
   const [dialogRef,setDialogRef]= useState<ProdArrayProps>()
   const [rankingIndex,setRankingIndex] = useState(0)
   const [isLoading,setIsLoading] = useState(false)
-  const [voter, setVoter] = useState<string>('')
 
   useEffect(() => {
     const storagedTags = localStorage.getItem('tags')
@@ -97,19 +94,17 @@ export function ContextWrapProvider({
   useEffect(() => {
     async function voteUp() {
       console.log(upVoteProduct)
-      try {
+      try { 
         const response = await axios.post(
           'https://ph-clone.onrender.com/upVote',
-          upVoteProduct,{headers:{
-            'Authorization': `Bearer: ${voter}`
-          }}
+          upVoteProduct
         )
       } catch (error) {
         console.log(error)
       }
     }
     voteUp()
-  }, [upVoteProduct,voter])
+  }, [upVoteProduct])
 
   return (
     <ContextWrap.Provider
@@ -131,8 +126,6 @@ export function ContextWrapProvider({
         setRankingIndex,
         isLoading,
         setIsLoading,
-        voter,
-        setVoter
       }}
     >
       {children}

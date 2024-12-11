@@ -23,7 +23,6 @@ export default function Dashboard() {
     setDialogRef,
     tagsArray,
     setTagsArray,
-    setVoter
   } = useContextWrap()
   const [isSessionLoaded, setIsSessionLoaded] = useState<boolean>(false)
   const [productsArray, setProductsArray] = useState<ProdArrayProps[]>()
@@ -61,21 +60,7 @@ export default function Dashboard() {
     getDashboard()
   }, [session, isSessionLoaded])
 
-  async function voterCheckHandler (productID: string){
-    if(session){
-      setIsSessionLoaded(true)
-    }
-    try{
-      if(isSessionLoaded){
-        const token = await session?.getToken()
-        if(token){
-          setVoter(token)
-        }
-      }
-    }catch(error){
-      console.log(error)
-    }
-  }
+
 
   useEffect(() => {
     function getRef() {
@@ -146,7 +131,6 @@ export default function Dashboard() {
                   setRankingIndex={setRankingIndex}
                   setUpVoteProduct={setUpVoteProduct}
                   displayUpVote={displayUpVote}
-                  voterCheckHandler={voterCheckHandler}
                 />
               )}
             </div>

@@ -91,20 +91,7 @@ export function ContextWrapProvider({
     }
   }, [tagsArray])
 
-  useEffect(() => {
-    async function voteUp() {
-      console.log(upVoteProduct)
-      try { 
-        const response = await axios.post(
-          'https://ph-clone.onrender.com/upVote',
-          upVoteProduct
-        )
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    voteUp()
-  }, [upVoteProduct])
+
 
   return (
     <ContextWrap.Provider

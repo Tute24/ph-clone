@@ -114,6 +114,7 @@ export default function TagPage() {
             setRankingIndex={setRankingIndex}
             setUpVoteProduct={setUpVoteProduct}
             displayUpVote={displayUpVote}
+            voteUp={displayUpVote}
 
           />
         )}

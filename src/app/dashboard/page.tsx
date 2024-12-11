@@ -131,6 +131,7 @@ export default function Dashboard() {
                   setRankingIndex={setRankingIndex}
                   setUpVoteProduct={setUpVoteProduct}
                   displayUpVote={displayUpVote}
+                  voteUp={displayUpVote}
                 />
               )}
             </div>

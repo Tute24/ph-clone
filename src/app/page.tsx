@@ -7,6 +7,7 @@ import DialogModal from '@/components/DialogModal/DialogModal'
 import ProdArrayProps from '@/types/ProdArrayProps'
 import ProductsList from '@/components/ProductsListDisplay/ProductsList'
 import Categories from '@/components/Categories/Categories'
+import { useSession } from '@clerk/clerk-react'
 
 export default function HomePage() {
   const {
@@ -24,6 +25,7 @@ export default function HomePage() {
   } = useContextWrap()
 
   const [productsArray, setProductsArray] = useState<ProdArrayProps[]>([])
+  const {session} = useSession()
 
   useEffect(() => {
     async function fetchProducts() {
@@ -59,6 +61,33 @@ export default function HomePage() {
     }
     getRef()
   }, [selectedLi])
+
+
+  
+    async function voteUp(productId:string) {
+      const product = {
+        product: productId
+      }
+      if(!session){
+        console.log(`There's no active session!`)
+        return
+    }
+      try { 
+        console.log(product)
+        const token = await session?.getToken()
+        console.log(token)
+        const response = await axios.post(
+          'https://ph-clone.onrender.com/upVote',
+          product,{headers:{
+            Authorization: `Bearer ${token}`
+        }}
+        )
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  
+  
   
   function displayUpVote(productID?: string) {
     setProductsArray((current) =>
@@ -107,6 +136,7 @@ export default function HomePage() {
             setRankingIndex={setRankingIndex}
             setUpVoteProduct={setUpVoteProduct}
             displayUpVote={displayUpVote}
+            voteUp={voteUp}
           />
         </div>
         <div>
@@ -122,6 +152,7 @@ export default function HomePage() {
             rankingIndex={rankingIndex}
             setUpVote={setUpVoteProduct}
             displayUpVote={displayUpVoteModal}
+            
           />
         </div>
       </div>

@@ -2,13 +2,11 @@
 
 import { useContextWrap } from '@/contexts/ContextWrap'
 import axios from 'axios'
-import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import DialogModal from '@/components/DialogModal/DialogModal'
 import ProdArrayProps from '@/types/ProdArrayProps'
 import ProductsList from '@/components/ProductsListDisplay/ProductsList'
 import Categories from '@/components/Categories/Categories'
-import { useSession } from '@clerk/clerk-react'
 
 export default function HomePage() {
   const {
@@ -22,13 +20,10 @@ export default function HomePage() {
     dialogRef,
     setDialogRef,
     rankingIndex,
-    setRankingIndex,
-    setVoter
+    setRankingIndex
   } = useContextWrap()
 
   const [productsArray, setProductsArray] = useState<ProdArrayProps[]>([])
-  const {session} = useSession()
-  const [isSessionLoaded, setIsSessionLoaded] = useState<boolean>(false)
 
   useEffect(() => {
     async function fetchProducts() {
@@ -64,23 +59,7 @@ export default function HomePage() {
     }
     getRef()
   }, [selectedLi])
-
-  async function voterCheckHandler (productID: string){
-      if(session){
-        setIsSessionLoaded(true)
-      }
-      try{
-        if(isSessionLoaded){
-          const token = await session?.getToken()
-          if(token){
-            setVoter(token)
-          }
-        }
-      }catch(error){
-        console.log(error)
-      }
-  }
-
+  
   function displayUpVote(productID?: string) {
     setProductsArray((current) =>
       current?.map((product) =>
@@ -121,14 +100,13 @@ export default function HomePage() {
       <div className="flex flex-col sm:flex-row ">
         <div className=" sm:w-9/12">
           <h1 className="flex justify-center p-4 font-bold">Products:</h1>
-          <ProductsList
+           <ProductsList
             productsArray={productsArray}
             openModal={openModal}
             setSelectedLi={setSelectedLi}
             setRankingIndex={setRankingIndex}
             setUpVoteProduct={setUpVoteProduct}
             displayUpVote={displayUpVote}
-            voterCheckHandler={voterCheckHandler}
           />
         </div>
         <div>

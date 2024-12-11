@@ -6,5 +6,6 @@ export default interface ProductType{
     productUrl: string,
     tags:string[],
     upVotes: number,
+    voters: [string],
     createdAt: Date
 }

@@ -23,8 +23,9 @@ export default function Dashboard() {
     setDialogRef,
     tagsArray,
     setTagsArray,
+    setVoter
   } = useContextWrap()
-  const [isSeassionLoaded, setIsSessionLoaded] = useState<boolean>(false)
+  const [isSessionLoaded, setIsSessionLoaded] = useState<boolean>(false)
   const [productsArray, setProductsArray] = useState<ProdArrayProps[]>()
 
   useEffect(() => {
@@ -33,7 +34,7 @@ export default function Dashboard() {
         setIsSessionLoaded(true)
       }
       try {
-        if (isSeassionLoaded) {
+        if (isSessionLoaded) {
           const token = await session?.getToken()
           const response = await axios.get(
             'https://ph-clone.onrender.com/dashboard',
@@ -58,7 +59,23 @@ export default function Dashboard() {
       }
     }
     getDashboard()
-  }, [session, isSeassionLoaded])
+  }, [session, isSessionLoaded])
+
+  async function voterCheckHandler (productID: string){
+    if(session){
+      setIsSessionLoaded(true)
+    }
+    try{
+      if(isSessionLoaded){
+        const token = await session?.getToken()
+        if(token){
+          setVoter(token)
+        }
+      }
+    }catch(error){
+      console.log(error)
+    }
+  }
 
   useEffect(() => {
     function getRef() {
@@ -108,6 +125,7 @@ export default function Dashboard() {
   }
   }
 
+
   return (
     <>
       <SignedOut>
@@ -128,6 +146,7 @@ export default function Dashboard() {
                   setRankingIndex={setRankingIndex}
                   setUpVoteProduct={setUpVoteProduct}
                   displayUpVote={displayUpVote}
+                  voterCheckHandler={voterCheckHandler}
                 />
               )}
             </div>

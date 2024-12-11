@@ -1,7 +1,7 @@
 'use client'
 
 import { useContextWrap } from '@/contexts/ContextWrap'
-import { SignedIn, SignedOut, SignInButton } from '@clerk/nextjs'
+import { SignedIn, SignedOut, SignInButton, useSession } from '@clerk/nextjs'
 import axios from 'axios'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
@@ -26,9 +26,12 @@ export default function TagPage() {
     setRankingIndex,
     tagsArray,
     setTagsArray,
+    setVoter
   } = useContextWrap()
 
   const [selectedTagArray, setSelectedTagArray] = useState<ProdArrayProps[]>()
+  const {session} = useSession()
+  const [isSessionLoaded, setIsSessionLoaded] = useState<boolean>(false)
 
   useEffect(() => {
     if (tagsArray.length === 0) {
@@ -55,6 +58,22 @@ export default function TagPage() {
     }
     getProductsWithTag()
   }, [])
+
+  async function voterCheckHandler (productID: string){
+    if(session){
+      setIsSessionLoaded(true)
+    }
+    try{
+      if(isSessionLoaded){
+        const token = await session?.getToken()
+        if(token){
+          setVoter(token)
+        }
+      }
+    }catch(error){
+      console.log(error)
+    }
+  }
 
   useEffect(() => {
     function getRef() {
@@ -116,6 +135,7 @@ export default function TagPage() {
             setRankingIndex={setRankingIndex}
             setUpVoteProduct={setUpVoteProduct}
             displayUpVote={displayUpVote}
+            voterCheckHandler={voterCheckHandler}
           />
         )}
       </div>

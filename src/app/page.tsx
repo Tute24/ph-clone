@@ -8,6 +8,7 @@ import DialogModal from '@/components/DialogModal/DialogModal'
 import ProdArrayProps from '@/types/ProdArrayProps'
 import ProductsList from '@/components/ProductsListDisplay/ProductsList'
 import Categories from '@/components/Categories/Categories'
+import { useSession } from '@clerk/clerk-react'
 
 export default function HomePage() {
   const {
@@ -22,9 +23,12 @@ export default function HomePage() {
     setDialogRef,
     rankingIndex,
     setRankingIndex,
+    setVoter
   } = useContextWrap()
 
   const [productsArray, setProductsArray] = useState<ProdArrayProps[]>([])
+  const {session} = useSession()
+  const [isSessionLoaded, setIsSessionLoaded] = useState<boolean>(false)
 
   useEffect(() => {
     async function fetchProducts() {
@@ -60,6 +64,22 @@ export default function HomePage() {
     }
     getRef()
   }, [selectedLi])
+
+  async function voterCheckHandler (productID: string){
+      if(session){
+        setIsSessionLoaded(true)
+      }
+      try{
+        if(isSessionLoaded){
+          const token = await session?.getToken()
+          if(token){
+            setVoter(token)
+          }
+        }
+      }catch(error){
+        console.log(error)
+      }
+  }
 
   function displayUpVote(productID?: string) {
     setProductsArray((current) =>
@@ -108,6 +128,7 @@ export default function HomePage() {
             setRankingIndex={setRankingIndex}
             setUpVoteProduct={setUpVoteProduct}
             displayUpVote={displayUpVote}
+            voterCheckHandler={voterCheckHandler}
           />
         </div>
         <div>

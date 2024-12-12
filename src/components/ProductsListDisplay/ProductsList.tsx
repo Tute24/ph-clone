@@ -10,7 +10,6 @@ interface ListProps {
   setSelectedLi: (value: string) => void
   setRankingIndex: (value: number) => void
   setUpVoteProduct: (value: { product: string }) => void
-  displayUpVote: (value: string) => void
   voteUp: (value:string) => void
 }
 
@@ -20,7 +19,6 @@ export default function ProductsList({
   setSelectedLi,
   setRankingIndex,
   setUpVoteProduct,
-  displayUpVote,
   voteUp
 }: ListProps) {
   
@@ -85,7 +83,6 @@ export default function ProductsList({
                       setUpVoteProduct({
                         product: product._id,
                       })
-                      displayUpVote(product._id)
                       voteUp(product._id)
                     }}
                     className="px-2 border-solid border-2 border-gray-200 rounded-md"

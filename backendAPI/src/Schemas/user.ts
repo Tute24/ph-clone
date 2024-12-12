@@ -15,6 +15,10 @@ const userSchema: Schema = new mongoose.Schema({
         required: true,
         unique:true
     },
+    productsVoted:{
+        type: [String],
+        default: []
+    },
     createdAt:{
         type: Date,
         default: Date.now()

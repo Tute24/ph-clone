@@ -60,8 +60,6 @@ export default function Dashboard() {
     getDashboard()
   }, [session, isSessionLoaded])
 
-
-
   useEffect(() => {
     function getRef() {
       const dialogRef = productsArray?.find(
@@ -75,6 +73,40 @@ export default function Dashboard() {
     getRef()
   }, [selectedLi])
 
+  async function voteUp(productId: string) {
+    const product = {
+      product: productId,
+    }
+    if (!session) {
+      console.log(`There's no active session!`)
+      return
+    }
+    try {
+      console.log(product)
+      const token = await session?.getToken()
+      console.log(token)
+      const response = await axios.post(
+        'https://ph-clone.onrender.com/upVote',
+        product,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+
+      setProductsArray((current) =>
+        current?.map((product) =>
+          product._id === productId
+            ? { ...product, upVotes: product.upVotes + 1 }
+            : product
+        )
+      )
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   function openModal(product: string) {
     console.log(product)
     modalDisplay.current?.showModal()
@@ -84,37 +116,47 @@ export default function Dashboard() {
     modalDisplay.current?.close()
   }
 
-  function displayUpVote(productID?: string) {
-    setProductsArray((current) =>
-      current?.map((product) =>
-        product._id === productID
-          ? { ...product, upVotes: product.upVotes + 1 }
-          : product
-      )
-    )
-  }
-
-  function displayUpVoteModal(productID?: string) {
-    if(dialogRef && dialogRef._id===productID){
-    setDialogRef({...dialogRef,
-      upVotes: dialogRef.upVotes+1
+  async function voteUpModal(productId: string) {
+    const product = {
+      product: productId,
     }
-    )
-    setProductsArray((current) =>
-      current?.map((product) =>
-        product._id === productID
-          ? { ...product, upVotes: product.upVotes + 1 }
-          : product
+    if (!session) {
+      console.log(`There's no active session!`)
+      return
+    }
+    try {
+      console.log(product)
+      const token = await session?.getToken()
+      console.log(token)
+      const response = await axios.post(
+        'https://ph-clone.onrender.com/upVote',
+        product,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
-    )
-  }
-  }
 
+      if (dialogRef && dialogRef._id === productId) {
+        setDialogRef({ ...dialogRef, upVotes: dialogRef.upVotes + 1 })
+        setProductsArray((current) =>
+          current?.map((product) =>
+            product._id === productId
+              ? { ...product, upVotes: product.upVotes + 1 }
+              : product
+          )
+        )
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <>
       <SignedOut>
-        <Unauthorized/>
+        <Unauthorized />
       </SignedOut>
       <SignedIn>
         <>
@@ -130,8 +172,7 @@ export default function Dashboard() {
                   setSelectedLi={setSelectedLi}
                   setRankingIndex={setRankingIndex}
                   setUpVoteProduct={setUpVoteProduct}
-                  displayUpVote={displayUpVote}
-                  voteUp={displayUpVote}
+                  voteUp={voteUp}
                 />
               )}
             </div>
@@ -145,7 +186,7 @@ export default function Dashboard() {
                 modalDisplay={modalDisplay}
                 rankingIndex={rankingIndex}
                 setUpVote={setUpVoteProduct}
-                displayUpVote={displayUpVoteModal}
+                voteUp={voteUpModal}
               />
             </div>
           </div>

@@ -27,6 +27,7 @@ export default function TagPage() {
   } = useContextWrap()
 
   const [selectedTagArray, setSelectedTagArray] = useState<ProdArrayProps[]>()
+  const { session } = useSession()
 
   useEffect(() => {
     if (tagsArray.length === 0) {
@@ -66,30 +67,75 @@ export default function TagPage() {
     getRef()
   }, [selectedLi])
 
-  function displayUpVote(productID?: string) {
-    setSelectedTagArray((current) =>
-      current?.map((product) =>
-        product._id === productID
-          ? { ...product, upVotes: product.upVotes + 1 }
-          : product
+  async function voteUp(productId: string) {
+    const product = {
+      product: productId,
+    }
+    if (!session) {
+      console.log(`There's no active session!`)
+      return
+    }
+    try {
+      console.log(product)
+      const token = await session?.getToken()
+      console.log(token)
+      const response = await axios.post(
+        'https://ph-clone.onrender.com/upVote',
+        product,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
-    )
+
+      setSelectedTagArray((current) =>
+        current?.map((product) =>
+          product._id === productId
+            ? { ...product, upVotes: product.upVotes + 1 }
+            : product
+        )
+      )
+    } catch (error) {
+      console.log(error)
+    }
   }
 
-  function displayUpVoteModal(productID?: string) {
-    if(dialogRef && dialogRef._id===productID){
-    setDialogRef({...dialogRef,
-      upVotes: dialogRef.upVotes+1
+  async function voteUpModal(productId: string) {
+    const product = {
+      product: productId,
     }
-    )
-    setSelectedTagArray((current) =>
-      current?.map((product) =>
-        product._id === productID
-          ? { ...product, upVotes: product.upVotes + 1 }
-          : product
+    if (!session) {
+      console.log(`There's no active session!`)
+      return
+    }
+    try {
+      console.log(product)
+      const token = await session?.getToken()
+      console.log(token)
+      const response = await axios.post(
+        'https://ph-clone.onrender.com/upVote',
+        product,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
-    )
-  }
+
+      if (dialogRef && dialogRef._id === productId) {
+        setDialogRef({ ...dialogRef, upVotes: dialogRef.upVotes + 1 })
+        setSelectedTagArray((current) =>
+          current?.map((product) =>
+            product._id === productId
+              ? { ...product, upVotes: product.upVotes + 1 }
+              : product
+          )
+        )
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   function openModal(product: string) {
@@ -113,9 +159,7 @@ export default function TagPage() {
             setSelectedLi={setSelectedLi}
             setRankingIndex={setRankingIndex}
             setUpVoteProduct={setUpVoteProduct}
-            displayUpVote={displayUpVote}
-            voteUp={displayUpVote}
-
+            voteUp={voteUp}
           />
         )}
       </div>
@@ -129,7 +173,7 @@ export default function TagPage() {
           modalDisplay={modalDisplay}
           rankingIndex={rankingIndex}
           setUpVote={setUpVoteProduct}
-          displayUpVote={displayUpVoteModal}
+          voteUp={voteUpModal}
         />
       </div>
     </div>

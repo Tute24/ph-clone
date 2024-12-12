@@ -7,11 +7,12 @@ import { SignedIn, SignedOut, SignInButton } from '@clerk/nextjs'
 
 interface DialogProps {
   clickClose: (value: any) => void
-  displayUpVote: (value?: string | undefined) => void
+  
   rankingIndex: any
   dialogRef?: ProdArrayProps
   modalDisplay: LegacyRef<HTMLDialogElement>
   setUpVote: (value: { product?: string }) => void
+  voteUp:(value:string) => void
 }
 
 export default function DialogModal({
@@ -20,7 +21,7 @@ export default function DialogModal({
   modalDisplay,
   rankingIndex,
   setUpVote,
-  displayUpVote,
+  voteUp
 }: DialogProps) {
   return (
     <dialog className="rounded-md sm:w-3/6" ref={modalDisplay}>
@@ -78,7 +79,7 @@ export default function DialogModal({
                   setUpVote({
                     product: dialogRef?._id,
                   })
-                  displayUpVote(dialogRef?._id)
+                  {dialogRef?._id && voteUp(dialogRef?._id)}
                 }}
                 className="flex flex-row justify-between text-xs py-2 px-5  sm:py-3 sm:px-8 text-white font-bold gap-3 bg-orange1 rounded-md sm:text-sm"
               >

@@ -11,6 +11,7 @@ export default function NewProduct(){
 
     const {productInfos,setProductInfos, statusMessage,setStatusMessage, isLoading,setIsLoading} = useContextWrap()
     const {session} = useSession()
+    const apiUrl = process.env.API_URL
     function handleInputChange(e:React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>){
         setProductInfos(
             {
@@ -29,7 +30,7 @@ export default function NewProduct(){
         try{
                 setIsLoading(true)
                 const token = await session?.getToken()
-                const response = await axios.post('https://ph-clone.onrender.com/newProduct', productInfos, {headers:{
+                const response = await axios.post(`${apiUrl}/newProduct`, productInfos, {headers:{
                     Authorization: `Bearer ${token}`
                 }})
             if(response){

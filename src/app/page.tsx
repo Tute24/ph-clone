@@ -26,12 +26,13 @@ export default function HomePage() {
 
   const [productsArray, setProductsArray] = useState<ProdArrayProps[]>([])
   const { session } = useSession()
+  const apiUrl = process.env.API_URL
 
   useEffect(() => {
     async function fetchProducts() {
       try {
         const response = await axios.get(
-          'https://ph-clone.onrender.com/productsList'
+          `${apiUrl}/productsList`
         )
         if (response) {
           const productsData: ProdArrayProps[] = response.data.products
@@ -75,7 +76,7 @@ export default function HomePage() {
       const token = await session?.getToken()
       console.log(token)
       const response = await axios.post(
-        'https://ph-clone.onrender.com/upVote',
+        `${apiUrl}/upVote`,
         product,
         {
           headers: {
@@ -109,7 +110,7 @@ export default function HomePage() {
       const token = await session?.getToken()
       console.log(token)
       const response = await axios.post(
-        'https://ph-clone.onrender.com/upVote',
+        `${apiUrl}/upVote`,
         product,
         {
           headers: {

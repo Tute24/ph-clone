@@ -26,6 +26,7 @@ export default function Dashboard() {
   } = useContextWrap()
   const [isSessionLoaded, setIsSessionLoaded] = useState<boolean>(false)
   const [productsArray, setProductsArray] = useState<ProdArrayProps[]>()
+  const apiUrl = process.env.API_URL
 
   useEffect(() => {
     async function getDashboard() {
@@ -36,7 +37,7 @@ export default function Dashboard() {
         if (isSessionLoaded) {
           const token = await session?.getToken()
           const response = await axios.get(
-            'https://ph-clone.onrender.com/dashboard',
+            `${apiUrl}/dashboard`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -86,7 +87,7 @@ export default function Dashboard() {
       const token = await session?.getToken()
       console.log(token)
       const response = await axios.post(
-        'https://ph-clone.onrender.com/upVote',
+        `${apiUrl}/upVote`,
         product,
         {
           headers: {
@@ -129,7 +130,7 @@ export default function Dashboard() {
       const token = await session?.getToken()
       console.log(token)
       const response = await axios.post(
-        'https://ph-clone.onrender.com/upVote',
+        `${apiUrl}/upVote`,
         product,
         {
           headers: {

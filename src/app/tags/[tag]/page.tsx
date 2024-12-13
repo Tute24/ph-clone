@@ -28,6 +28,7 @@ export default function TagPage() {
 
   const [selectedTagArray, setSelectedTagArray] = useState<ProdArrayProps[]>()
   const { session } = useSession()
+  const apiUrl = process.env.API_URL
 
   useEffect(() => {
     if (tagsArray.length === 0) {
@@ -41,7 +42,7 @@ export default function TagPage() {
     async function getProductsWithTag() {
       try {
         const response = await axios.post(
-          'https://ph-clone.onrender.com/getAll',
+          `${apiUrl}/getAll`,
           decodedTag
         )
         const products: ProdArrayProps[] = response.data.products
@@ -80,7 +81,7 @@ export default function TagPage() {
       const token = await session?.getToken()
       console.log(token)
       const response = await axios.post(
-        'https://ph-clone.onrender.com/upVote',
+        `${apiUrl}/upVote`,
         product,
         {
           headers: {
@@ -114,7 +115,7 @@ export default function TagPage() {
       const token = await session?.getToken()
       console.log(token)
       const response = await axios.post(
-        'https://ph-clone.onrender.com/upVote',
+        `${apiUrl}/upVote`,
         product,
         {
           headers: {

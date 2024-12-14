@@ -25,7 +25,7 @@ export default function Dashboard() {
     setDialogRef,
     tagsArray,
     setTagsArray,
-    modalDelete
+    modalDelete,
   } = useContextWrap()
   const [isSessionLoaded, setIsSessionLoaded] = useState<boolean>(false)
   const [productsArray, setProductsArray] = useState<ProdArrayProps[]>()
@@ -122,8 +122,21 @@ export default function Dashboard() {
     modalDelete.current?.close()
   }
 
-  async function DeleteProduct(){
+  async function DeleteProduct(productId?: string) {
+    const toBeDeleted = productsArray?.find(
+      (products) => products._id === productId
+    )
 
+    if (toBeDeleted) {
+      try {
+        const deletedId = {
+          productId,
+        }
+        const response = axios.post(`${apiUrl}/deleteProduct`, deletedId)
+      } catch (error) {
+        console.log(error)
+      }
+    }
   }
 
   async function voteUpModal(productId: string) {

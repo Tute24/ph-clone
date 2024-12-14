@@ -128,7 +128,7 @@ export default function DashboardProductsList({
                   openDeleteModal(product.productName)
                 }}
               >
-                <img className="w-16" src="/bin2.png" alt="Delete Product" />
+                <img className="w-36 sm:w-16" src="/bin2.png" alt="Delete Product" />
               </button>
             </div>
           </div>

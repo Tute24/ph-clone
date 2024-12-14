@@ -179,8 +179,8 @@ export default function Dashboard() {
       </SignedOut>
       <SignedIn>
         <>
-          <div className="flex flex-row ">
-            <div className="w-9/12">
+          <div className="flex flex-col sm:flex-row ">
+            <div className="w-full sm:w-9/12">
               <h1 className="flex justify-center p-4 font-bold">
                 Your products:
               </h1>

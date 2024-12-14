@@ -10,7 +10,6 @@ import DialogModal from '@/components/Modals/DialogModal'
 import Categories from '@/components/Categories/Categories'
 import Unauthorized from '@/components/UnauthorizedLayout/Unauthorized'
 import DeleteModal from '@/components/Modals/DeleteModal'
-import { deleteModel } from 'mongoose'
 
 export default function Dashboard() {
   const { session } = useSession()

@@ -51,7 +51,6 @@ export default function Dashboard() {
           const uniqueTags = [...new Set(tagsFetch)]
           setTagsArray(uniqueTags)
           setProductsArray(products)
-          console.log(response.data)
         }
       } catch (error) {
         console.log(error)

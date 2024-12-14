@@ -12,7 +12,6 @@ dashRouter.get(
     try {
       console.log ("Initializing try")
       const usersProducts: (Document & ProductType)[] = await Product.find({createdBy: userId}, "productName description productUrl upVotes tags summDesc")
-      console.log(usersProducts)
       res.status(200).json({ message: 'Success!',products: usersProducts})
     } catch (error) {
       res.status(500).json({ message: 'Server Error' })

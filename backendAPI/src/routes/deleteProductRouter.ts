@@ -7,7 +7,7 @@ deleteRouter.post('/deleteProduct', async(req:Request,res:Response):Promise<any>
     console.log(productId)
     if(productId){
         try{
-            await Product.deleteOne({productId})
+            await Product.deleteOne({_id:productId})
             console.log("Product deleted")
             return res.status(200).json({message:"Product deleted successfully."})
         }catch(error){

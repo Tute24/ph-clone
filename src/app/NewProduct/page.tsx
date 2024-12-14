@@ -11,7 +11,7 @@ export default function NewProduct(){
 
     const {productInfos,setProductInfos, statusMessage,setStatusMessage, isLoading,setIsLoading} = useContextWrap()
     const {session} = useSession()
-    const apiUrl = process.env.API_URL
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL
     function handleInputChange(e:React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>){
         setProductInfos(
             {

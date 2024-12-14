@@ -9,6 +9,8 @@ import DashboardProductsList from '@/components/ProductsListsDisplays/DashboardP
 import DialogModal from '@/components/Modals/DialogModal'
 import Categories from '@/components/Categories/Categories'
 import Unauthorized from '@/components/UnauthorizedLayout/Unauthorized'
+import DeleteModal from '@/components/Modals/DeleteModal'
+import { deleteModel } from 'mongoose'
 
 export default function Dashboard() {
   const { session } = useSession()
@@ -23,6 +25,7 @@ export default function Dashboard() {
     setDialogRef,
     tagsArray,
     setTagsArray,
+    modalDelete
   } = useContextWrap()
   const [isSessionLoaded, setIsSessionLoaded] = useState<boolean>(false)
   const [productsArray, setProductsArray] = useState<ProdArrayProps[]>()
@@ -106,8 +109,21 @@ export default function Dashboard() {
     modalDisplay.current?.showModal()
   }
 
+  function openDeleteModal(product: string) {
+    console.log(product)
+    modalDelete.current?.showModal()
+  }
+
   function closeModal() {
     modalDisplay.current?.close()
+  }
+
+  function closeDeleteModal() {
+    modalDelete.current?.close()
+  }
+
+  async function DeleteProduct(){
+
   }
 
   async function voteUpModal(productId: string) {
@@ -157,6 +173,7 @@ export default function Dashboard() {
               </h1>
               {productsArray && (
                 <DashboardProductsList
+                  openDeleteModal={openDeleteModal}
                   productsArray={productsArray}
                   openModal={openModal}
                   setSelectedLi={setSelectedLi}
@@ -177,6 +194,14 @@ export default function Dashboard() {
                 rankingIndex={rankingIndex}
                 setUpVote={setUpVoteProduct}
                 voteUp={voteUpModal}
+              />
+            </div>
+            <div>
+              <DeleteModal
+                dialogRef={dialogRef}
+                clickClose={closeDeleteModal}
+                modalDelete={modalDelete}
+                deleteReq={DeleteProduct}
               />
             </div>
           </div>

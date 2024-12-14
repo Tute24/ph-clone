@@ -5,6 +5,7 @@ import { SignedOut, SignedIn, SignInButton } from '@clerk/nextjs'
 interface ListProps {
   productsArray: ProdArrayProps[]
   openModal: (value: string) => void
+  openDeleteModal: (value:string) => void
   setSelectedLi: (value: string) => void
   setRankingIndex: (value: number) => void
   setUpVoteProduct: (value: { product: string }) => void
@@ -17,7 +18,8 @@ export default function DashboardProductsList({
   setSelectedLi,
   setRankingIndex,
   setUpVoteProduct,
-  voteUp
+  voteUp,
+  openDeleteModal
 }: ListProps) {
   
   return (
@@ -117,6 +119,7 @@ export default function DashboardProductsList({
             </li>
             <button type='button' className=' p-2 rounded-full flex items-center justify-center hover:bg-alternativeRed' onClick={()=>{
                 setSelectedLi(product._id)
+                openDeleteModal(product.productName)
             }}><img className="w-16" src="/bin2.png" alt="Delete Product" /></button>
             </div>
           </div>

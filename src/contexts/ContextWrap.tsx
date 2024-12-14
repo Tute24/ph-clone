@@ -1,5 +1,5 @@
 'use client'
-import axios from 'axios'
+
 import {
   createContext,
   RefObject,
@@ -34,6 +34,7 @@ interface ContextWrapProps {
   }
   setUpVoteProduct: (value: { product?: string }) => void
   modalDisplay: RefObject<HTMLDialogElement>
+  modalDelete: RefObject<HTMLDialogElement>
   selectedLi: string
   setSelectedLi: (value: string) => void
   dialogRef?: ProdArrayProps
@@ -66,6 +67,7 @@ export function ContextWrapProvider({
   })
   const [statusMessage, setStatusMessage] = useState<string>('')
   const modalDisplay = useRef<HTMLDialogElement>(null)
+  const modalDelete = useRef<HTMLDialogElement>(null)
   const [tagsArray, setTagsArray] = useState<string[]>([])
   const [upVoteProduct, setUpVoteProduct] = useState<{
     product?: string
@@ -76,6 +78,7 @@ export function ContextWrapProvider({
   const [dialogRef,setDialogRef]= useState<ProdArrayProps>()
   const [rankingIndex,setRankingIndex] = useState(0)
   const [isLoading,setIsLoading] = useState(false)
+  
 
   useEffect(() => {
     const storagedTags = localStorage.getItem('tags')
@@ -113,6 +116,7 @@ export function ContextWrapProvider({
         setRankingIndex,
         isLoading,
         setIsLoading,
+        modalDelete
       }}
     >
       {children}

@@ -1,5 +1,3 @@
-'use client'
-
 import ProdArrayProps from '@/types/ProdArrayProps'
 import Link from 'next/link'
 import { SignedOut, SignedIn, SignInButton } from '@clerk/nextjs'
@@ -13,7 +11,7 @@ interface ListProps {
   voteUp: (value:string) => void
 }
 
-export default function DashboardProductsList({
+export default function ProductsList({
   productsArray,
   openModal,
   setSelectedLi,

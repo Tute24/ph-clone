@@ -1,5 +1,3 @@
-'use client'
-
 import ProdArrayProps from '@/types/ProdArrayProps'
 import Link from 'next/link'
 import { SignedOut, SignedIn, SignInButton } from '@clerk/nextjs'
@@ -13,7 +11,7 @@ interface ListProps {
   voteUp: (value:string) => void
 }
 
-export default function ProductsList({
+export default function DashboardProductsList({
   productsArray,
   openModal,
   setSelectedLi,
@@ -32,6 +30,7 @@ export default function ProductsList({
             key={product._id}
             className="p-3 sm:p-5 border-gray-400 w-full sm:w-3/5"
           >
+            <div className='flex flex-row gap-2 items-center'>
             <li
               onClick={() => {
                 openModal(product.productName)
@@ -116,6 +115,10 @@ export default function ProductsList({
                   ))}
               </div>
             </li>
+            <button type='button' className=' p-2 rounded-full flex items-center justify-center hover:bg-alternativeRed' onClick={()=>{
+                setSelectedLi(product._id)
+            }}><img className="w-16" src="/bin2.png" alt="Delete Product" /></button>
+            </div>
           </div>
         ))}
     </ul>

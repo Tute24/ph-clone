@@ -3,9 +3,9 @@
 import { useContextWrap } from '@/contexts/ContextWrap'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import DialogModal from '@/components/DialogModal/DialogModal'
+import DialogModal from '@/components/Modals/DialogModal'
 import ProdArrayProps from '@/types/ProdArrayProps'
-import ProductsList from '@/components/ProductsListDisplay/ProductsList'
+import ProductsList from '@/components/ProductsListsDisplays/ProductsList'
 import Categories from '@/components/Categories/Categories'
 import { useSession } from '@clerk/clerk-react'
 
@@ -13,7 +13,6 @@ export default function HomePage() {
   const {
     tagsArray,
     setTagsArray,
-    upVoteProduct,
     setUpVoteProduct,
     modalDisplay,
     selectedLi,
@@ -26,14 +25,12 @@ export default function HomePage() {
 
   const [productsArray, setProductsArray] = useState<ProdArrayProps[]>([])
   const { session } = useSession()
-  const apiUrl = process.env.API_URL
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const response = await axios.get(
-          `${apiUrl}/productsList`
-        )
+        const response = await axios.get(`${apiUrl}/productsList`)
         if (response) {
           const productsData: ProdArrayProps[] = response.data.products
           const tagsFetch: string[] = productsData.flatMap((product) =>
@@ -75,15 +72,11 @@ export default function HomePage() {
       console.log(product)
       const token = await session?.getToken()
       console.log(token)
-      const response = await axios.post(
-        `${apiUrl}/upVote`,
-        product,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      const response = await axios.post(`${apiUrl}/upVote`, product, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
 
       setProductsArray((current) =>
         current?.map((product) =>
@@ -109,15 +102,11 @@ export default function HomePage() {
       console.log(product)
       const token = await session?.getToken()
       console.log(token)
-      const response = await axios.post(
-        `${apiUrl}/upVote`,
-        product,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      const response = await axios.post(`${apiUrl}/upVote`, product, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
 
       if (dialogRef && dialogRef._id === productId) {
         setDialogRef({ ...dialogRef, upVotes: dialogRef.upVotes + 1 })

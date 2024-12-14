@@ -1,5 +1,3 @@
-'use client'
-
 import { useContextWrap } from '@/contexts/ContextWrap'
 import ClipLoader from "react-spinners/ClipLoader"
 

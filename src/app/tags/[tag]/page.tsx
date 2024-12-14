@@ -7,8 +7,8 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import ProdArrayProps from '@/types/ProdArrayProps'
-import DialogModal from '@/components/DialogModal/DialogModal'
-import ProductsList from '@/components/ProductsListDisplay/ProductsList'
+import DialogModal from '@/components/Modals/DialogModal'
+import ProductsList from '@/components/ProductsListsDisplays/ProductsList'
 import Categories from '@/components/Categories/Categories'
 
 export default function TagPage() {
@@ -28,7 +28,7 @@ export default function TagPage() {
 
   const [selectedTagArray, setSelectedTagArray] = useState<ProdArrayProps[]>()
   const { session } = useSession()
-  const apiUrl = process.env.API_URL
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
   useEffect(() => {
     if (tagsArray.length === 0) {
@@ -41,10 +41,7 @@ export default function TagPage() {
   useEffect(() => {
     async function getProductsWithTag() {
       try {
-        const response = await axios.post(
-          `${apiUrl}/getAll`,
-          decodedTag
-        )
+        const response = await axios.post(`${apiUrl}/getAll`, decodedTag)
         const products: ProdArrayProps[] = response.data.products
         if (products) {
           setSelectedTagArray(products)
@@ -80,15 +77,11 @@ export default function TagPage() {
       console.log(product)
       const token = await session?.getToken()
       console.log(token)
-      const response = await axios.post(
-        `${apiUrl}/upVote`,
-        product,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      const response = await axios.post(`${apiUrl}/upVote`, product, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
 
       setSelectedTagArray((current) =>
         current?.map((product) =>
@@ -114,15 +107,11 @@ export default function TagPage() {
       console.log(product)
       const token = await session?.getToken()
       console.log(token)
-      const response = await axios.post(
-        `${apiUrl}/upVote`,
-        product,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      const response = await axios.post(`${apiUrl}/upVote`, product, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
 
       if (dialogRef && dialogRef._id === productId) {
         setDialogRef({ ...dialogRef, upVotes: dialogRef.upVotes + 1 })

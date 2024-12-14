@@ -5,8 +5,8 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import ProdArrayProps from '@/types/ProdArrayProps'
 import { useContextWrap } from '@/contexts/ContextWrap'
-import ProductsList from '@/components/ProductsListDisplay/ProductsList'
-import DialogModal from '@/components/DialogModal/DialogModal'
+import DashboardProductsList from '@/components/ProductsListsDisplays/DashboardPL'
+import DialogModal from '@/components/Modals/DialogModal'
 import Categories from '@/components/Categories/Categories'
 import Unauthorized from '@/components/UnauthorizedLayout/Unauthorized'
 
@@ -26,7 +26,7 @@ export default function Dashboard() {
   } = useContextWrap()
   const [isSessionLoaded, setIsSessionLoaded] = useState<boolean>(false)
   const [productsArray, setProductsArray] = useState<ProdArrayProps[]>()
-  const apiUrl = process.env.API_URL
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
   useEffect(() => {
     async function getDashboard() {
@@ -36,14 +36,11 @@ export default function Dashboard() {
       try {
         if (isSessionLoaded) {
           const token = await session?.getToken()
-          const response = await axios.get(
-            `${apiUrl}/dashboard`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          )
+          const response = await axios.get(`${apiUrl}/dashboard`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
           const products: ProdArrayProps[] = response.data.products
           const tagsFetch: string[] = products.flatMap((product) =>
             product.tags.flatMap((tag) => tag.split(/,\s*/))
@@ -86,15 +83,11 @@ export default function Dashboard() {
       console.log(product)
       const token = await session?.getToken()
       console.log(token)
-      const response = await axios.post(
-        `${apiUrl}/upVote`,
-        product,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      const response = await axios.post(`${apiUrl}/upVote`, product, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
 
       setProductsArray((current) =>
         current?.map((product) =>
@@ -129,15 +122,11 @@ export default function Dashboard() {
       console.log(product)
       const token = await session?.getToken()
       console.log(token)
-      const response = await axios.post(
-        `${apiUrl}/upVote`,
-        product,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      const response = await axios.post(`${apiUrl}/upVote`, product, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
 
       if (dialogRef && dialogRef._id === productId) {
         setDialogRef({ ...dialogRef, upVotes: dialogRef.upVotes + 1 })
@@ -167,7 +156,7 @@ export default function Dashboard() {
                 Your products:
               </h1>
               {productsArray && (
-                <ProductsList
+                <DashboardProductsList
                   productsArray={productsArray}
                   openModal={openModal}
                   setSelectedLi={setSelectedLi}

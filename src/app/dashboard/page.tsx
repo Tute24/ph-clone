@@ -1,13 +1,16 @@
 'use client'
 
 import { SignedIn, SignedOut, useSession } from '@clerk/clerk-react'
+import { useRouter } from 'next/router'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import ProdArrayProps from '@/types/ProdArrayProps'
 import { useContextWrap } from '@/contexts/ContextWrap'
-import ProductsList from '@/components/ProductsListDisplay/ProductsList'
-import DialogModal from '@/components/DialogModal/DialogModal'
+import DashboardProductsList from '@/components/ProductsListsDisplays/DashboardPL'
+import DialogModal from '@/components/Modals/DialogModal'
 import Categories from '@/components/Categories/Categories'
+import Unauthorized from '@/components/UnauthorizedLayout/Unauthorized'
+import DeleteModal from '@/components/Modals/DeleteModal'
 
 export default function Dashboard() {
   const { session } = useSession()
@@ -22,9 +25,12 @@ export default function Dashboard() {
     setDialogRef,
     tagsArray,
     setTagsArray,
+    modalDelete,
   } = useContextWrap()
-  const [isSeassionLoaded, setIsSessionLoaded] = useState<boolean>(false)
+  const [isSessionLoaded, setIsSessionLoaded] = useState<boolean>(false)
   const [productsArray, setProductsArray] = useState<ProdArrayProps[]>()
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL
+  
 
   useEffect(() => {
     async function getDashboard() {
@@ -32,16 +38,13 @@ export default function Dashboard() {
         setIsSessionLoaded(true)
       }
       try {
-        if (isSeassionLoaded) {
+        if (isSessionLoaded) {
           const token = await session?.getToken()
-          const response = await axios.get(
-            'https://ph-clone.onrender.com/dashboard',
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          )
+          const response = await axios.get(`${apiUrl}/dashboard`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
           const products: ProdArrayProps[] = response.data.products
           const tagsFetch: string[] = products.flatMap((product) =>
             product.tags.flatMap((tag) => tag.split(/,\s*/))
@@ -50,14 +53,13 @@ export default function Dashboard() {
           const uniqueTags = [...new Set(tagsFetch)]
           setTagsArray(uniqueTags)
           setProductsArray(products)
-          console.log(response.data)
         }
       } catch (error) {
         console.log(error)
       }
     }
     getDashboard()
-  }, [session, isSeassionLoaded])
+  }, [session, isSessionLoaded])
 
   useEffect(() => {
     function getRef() {
@@ -72,42 +74,128 @@ export default function Dashboard() {
     getRef()
   }, [selectedLi])
 
+  async function voteUp(productId: string) {
+    const product = {
+      product: productId,
+    }
+    if (!session) {
+      console.log(`There's no active session!`)
+      return
+    }
+    try {
+      console.log(product)
+      const token = await session?.getToken()
+      console.log(token)
+      const response = await axios.post(`${apiUrl}/upVote`, product, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      setProductsArray((current) =>
+        current?.map((product) =>
+          product._id === productId
+            ? { ...product, upVotes: product.upVotes + 1 }
+            : product
+        )
+      )
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   function openModal(product: string) {
     console.log(product)
     modalDisplay.current?.showModal()
+  }
+
+  function openDeleteModal(product: string) {
+    console.log(product)
+    modalDelete.current?.showModal()
   }
 
   function closeModal() {
     modalDisplay.current?.close()
   }
 
-  function displayUpVote(productID?: string) {
-    const isThere = productsArray?.find((product) => product._id === productID)
-    if (isThere && isThere.upVotes) {
-      isThere.upVotes++
+  function closeDeleteModal() {
+    modalDelete.current?.close()
+  }
+
+  async function DeleteProduct(productId?: string) {
+    const toBeDeleted = productsArray?.find(
+      (products) => products._id === productId
+    )
+    if (toBeDeleted) {
+      try {
+        const deletedId = {
+          productId,
+        }
+        const response = await axios.post(`${apiUrl}/deleteProduct`, deletedId)
+        if(response) {
+          closeDeleteModal()
+          setProductsArray((prev)=>prev?.filter(product => product._id !== productId))
+        } 
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
+
+  async function voteUpModal(productId: string) {
+    const product = {
+      product: productId,
+    }
+    if (!session) {
+      console.log(`There's no active session!`)
+      return
+    }
+    try {
+      console.log(product)
+      const token = await session?.getToken()
+      console.log(token)
+      const response = await axios.post(`${apiUrl}/upVote`, product, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      if (dialogRef && dialogRef._id === productId) {
+        setDialogRef({ ...dialogRef, upVotes: dialogRef.upVotes + 1 })
+        setProductsArray((current) =>
+          current?.map((product) =>
+            product._id === productId
+              ? { ...product, upVotes: product.upVotes + 1 }
+              : product
+          )
+        )
+      }
+    } catch (error) {
+      console.log(error)
     }
   }
 
   return (
     <>
       <SignedOut>
-        <h2>Você não está logado!</h2>
+        <Unauthorized />
       </SignedOut>
       <SignedIn>
         <>
-          <div className="flex flex-row ">
-            <div className="w-9/12">
+          <div className="flex flex-col sm:flex-row ">
+            <div className="w-full sm:w-9/12">
               <h1 className="flex justify-center p-4 font-bold">
                 Your products:
               </h1>
               {productsArray && (
-                <ProductsList
+                <DashboardProductsList
+                  openDeleteModal={openDeleteModal}
                   productsArray={productsArray}
                   openModal={openModal}
                   setSelectedLi={setSelectedLi}
                   setRankingIndex={setRankingIndex}
                   setUpVoteProduct={setUpVoteProduct}
-                  displayUpVote={displayUpVote}
+                  voteUp={voteUp}
                 />
               )}
             </div>
@@ -121,7 +209,15 @@ export default function Dashboard() {
                 modalDisplay={modalDisplay}
                 rankingIndex={rankingIndex}
                 setUpVote={setUpVoteProduct}
-                displayUpVote={displayUpVote}
+                voteUp={voteUpModal}
+              />
+            </div>
+            <div>
+              <DeleteModal
+                dialogRef={dialogRef}
+                clickClose={closeDeleteModal}
+                modalDelete={modalDelete}
+                deleteReq={DeleteProduct}
               />
             </div>
           </div>

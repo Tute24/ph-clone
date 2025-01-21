@@ -2,18 +2,17 @@
 
 import { useContextWrap } from '@/contexts/ContextWrap'
 import axios from 'axios'
-import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import DialogModal from '@/components/DialogModal/DialogModal'
+import DialogModal from '@/components/Modals/DialogModal'
 import ProdArrayProps from '@/types/ProdArrayProps'
-import ProductsList from '@/components/ProductsListDisplay/ProductsList'
+import ProductsList from '@/components/ProductsListsDisplays/ProductsList'
 import Categories from '@/components/Categories/Categories'
+import { useSession } from '@clerk/clerk-react'
 
 export default function HomePage() {
   const {
     tagsArray,
     setTagsArray,
-    upVoteProduct,
     setUpVoteProduct,
     modalDisplay,
     selectedLi,
@@ -25,13 +24,13 @@ export default function HomePage() {
   } = useContextWrap()
 
   const [productsArray, setProductsArray] = useState<ProdArrayProps[]>([])
+  const { session } = useSession()
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const response = await axios.get(
-          'https://ph-clone.onrender.com/productsList'
-        )
+        const response = await axios.get(`${apiUrl}/productsList`)
         if (response) {
           const productsData: ProdArrayProps[] = response.data.products
           const tagsFetch: string[] = productsData.flatMap((product) =>
@@ -61,10 +60,66 @@ export default function HomePage() {
     getRef()
   }, [selectedLi])
 
-  function displayUpVote(productID?: string) {
-    const isThere = productsArray.find((product) => product._id === productID)
-    if (isThere && isThere.upVotes) {
-      isThere.upVotes++
+  async function voteUp(productId: string) {
+    const product = {
+      product: productId,
+    }
+    if (!session) {
+      console.log(`There's no active session!`)
+      return
+    }
+    try {
+      console.log(product)
+      const token = await session?.getToken()
+      console.log(token)
+      const response = await axios.post(`${apiUrl}/upVote`, product, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      setProductsArray((current) =>
+        current?.map((product) =>
+          product._id === productId
+            ? { ...product, upVotes: product.upVotes + 1 }
+            : product
+        )
+      )
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  async function voteUpModal(productId: string) {
+    const product = {
+      product: productId,
+    }
+    if (!session) {
+      console.log(`There's no active session!`)
+      return
+    }
+    try {
+      console.log(product)
+      const token = await session?.getToken()
+      console.log(token)
+      const response = await axios.post(`${apiUrl}/upVote`, product, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      if (dialogRef && dialogRef._id === productId) {
+        setDialogRef({ ...dialogRef, upVotes: dialogRef.upVotes + 1 })
+        setProductsArray((current) =>
+          current?.map((product) =>
+            product._id === productId
+              ? { ...product, upVotes: product.upVotes + 1 }
+              : product
+          )
+        )
+      }
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -79,8 +134,8 @@ export default function HomePage() {
 
   return (
     <>
-      <div className="flex flex-row ">
-        <div className="w-9/12">
+      <div className="flex flex-col sm:flex-row ">
+        <div className=" sm:w-9/12">
           <h1 className="flex justify-center p-4 font-bold">Products:</h1>
           <ProductsList
             productsArray={productsArray}
@@ -88,13 +143,11 @@ export default function HomePage() {
             setSelectedLi={setSelectedLi}
             setRankingIndex={setRankingIndex}
             setUpVoteProduct={setUpVoteProduct}
-            displayUpVote={displayUpVote}
+            voteUp={voteUp}
           />
         </div>
         <div>
-          <Categories
-            tagsArray={tagsArray}
-          />
+          <Categories tagsArray={tagsArray} />
         </div>
         <div>
           <DialogModal
@@ -103,7 +156,7 @@ export default function HomePage() {
             modalDisplay={modalDisplay}
             rankingIndex={rankingIndex}
             setUpVote={setUpVoteProduct}
-            displayUpVote={displayUpVote}
+            voteUp={voteUpModal}
           />
         </div>
       </div>

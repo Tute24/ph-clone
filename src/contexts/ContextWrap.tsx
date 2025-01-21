@@ -1,5 +1,5 @@
 'use client'
-import axios from 'axios'
+
 import {
   createContext,
   RefObject,
@@ -34,12 +34,15 @@ interface ContextWrapProps {
   }
   setUpVoteProduct: (value: { product?: string }) => void
   modalDisplay: RefObject<HTMLDialogElement>
+  modalDelete: RefObject<HTMLDialogElement>
   selectedLi: string
   setSelectedLi: (value: string) => void
   dialogRef?: ProdArrayProps
   setDialogRef: (value: ProdArrayProps) => void
   rankingIndex: any
   setRankingIndex: (value:any) => void
+  isLoading: boolean
+  setIsLoading: (value:boolean)=> void,
 }
 
 const ContextWrap = createContext<ContextWrapProps | undefined>(undefined)
@@ -64,6 +67,7 @@ export function ContextWrapProvider({
   })
   const [statusMessage, setStatusMessage] = useState<string>('')
   const modalDisplay = useRef<HTMLDialogElement>(null)
+  const modalDelete = useRef<HTMLDialogElement>(null)
   const [tagsArray, setTagsArray] = useState<string[]>([])
   const [upVoteProduct, setUpVoteProduct] = useState<{
     product?: string
@@ -73,6 +77,8 @@ export function ContextWrapProvider({
   const [selectedLi,setSelectedLi] = useState<string>('')
   const [dialogRef,setDialogRef]= useState<ProdArrayProps>()
   const [rankingIndex,setRankingIndex] = useState(0)
+  const [isLoading,setIsLoading] = useState(false)
+  
 
   useEffect(() => {
     const storagedTags = localStorage.getItem('tags')
@@ -88,20 +94,7 @@ export function ContextWrapProvider({
     }
   }, [tagsArray])
 
-  useEffect(() => {
-    async function voteUp() {
-      console.log(upVoteProduct)
-      try {
-        const response = await axios.post(
-          'https://ph-clone.onrender.com/upVote',
-          upVoteProduct
-        )
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    voteUp()
-  }, [upVoteProduct])
+
 
   return (
     <ContextWrap.Provider
@@ -120,7 +113,10 @@ export function ContextWrapProvider({
         dialogRef,
         setDialogRef,
         rankingIndex,
-        setRankingIndex
+        setRankingIndex,
+        isLoading,
+        setIsLoading,
+        modalDelete
       }}
     >
       {children}

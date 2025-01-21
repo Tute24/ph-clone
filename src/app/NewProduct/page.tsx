@@ -4,13 +4,14 @@ import ProductForm from "@/components/ProductForm/ProductForm";
 import { useContextWrap } from "@/contexts/ContextWrap";
 import { SignedIn, SignedOut, SignInButton, useSession } from "@clerk/nextjs";
 import axios from "axios";
-import { useState } from "react";
+import Unauthorized from "@/components/UnauthorizedLayout/Unauthorized";
+
 
 export default function NewProduct(){
 
-    const {productInfos,setProductInfos} = useContextWrap()
-    const {statusMessage,setStatusMessage} = useContextWrap()
+    const {productInfos,setProductInfos, statusMessage,setStatusMessage, isLoading,setIsLoading} = useContextWrap()
     const {session} = useSession()
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL
     function handleInputChange(e:React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>){
         setProductInfos(
             {
@@ -27,19 +28,22 @@ export default function NewProduct(){
             return
         }
         try{
-            
+                setIsLoading(true)
                 const token = await session?.getToken()
-                const response = await axios.post('https://ph-clone.onrender.com/newProduct', productInfos, {headers:{
+                const response = await axios.post(`${apiUrl}/newProduct`, productInfos, {headers:{
                     Authorization: `Bearer ${token}`
                 }})
             if(response){
                 console.log(productInfos)
+                
                 setStatusMessage('Product added successfully!')
             }
             
         } catch(error){
             console.log(error)
             setStatusMessage(`Couldn't add the product.`)
+        } finally{
+            setIsLoading(false)
         }
     }
     
@@ -53,14 +57,7 @@ export default function NewProduct(){
                 />
             </SignedIn>
             <SignedOut>
-                <h2>
-                    You must be logged in to add a new product.
-                </h2>
-                <SignInButton>
-                    <button type="button">
-                        Log in
-                    </button>
-                </SignInButton>
+                <Unauthorized/>
             </SignedOut>
         </>
     )

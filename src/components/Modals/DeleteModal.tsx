@@ -15,6 +15,7 @@ export default function DeleteModal({
   modalDelete,
   deleteReq,
 }: DeleteModalProps) {
+
   return (
     <dialog className="rounded-md sm:w-2/6" ref={modalDelete}>
       <div className="flex flex-row items-center justify-between py-2 sm:py-0 sm:px-7 sm:mt-5">
@@ -35,7 +36,7 @@ export default function DeleteModal({
         </h2>
         <button
           onClick={()=>{
-            deleteReq(dialogRef?._id)
+             deleteReq(dialogRef?._id)
           }}
           className="bg-orange1 hover:bg-darkerOrange rounded-full text-white px-3 mt-3 mb-3 font-bold"
         >

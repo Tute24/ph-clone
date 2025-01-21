@@ -1,6 +1,7 @@
 'use client'
 
 import { SignedIn, SignedOut, useSession } from '@clerk/clerk-react'
+import { useRouter } from 'next/router'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import ProdArrayProps from '@/types/ProdArrayProps'
@@ -29,6 +30,7 @@ export default function Dashboard() {
   const [isSessionLoaded, setIsSessionLoaded] = useState<boolean>(false)
   const [productsArray, setProductsArray] = useState<ProdArrayProps[]>()
   const apiUrl = process.env.NEXT_PUBLIC_API_URL
+  
 
   useEffect(() => {
     async function getDashboard() {
@@ -124,13 +126,16 @@ export default function Dashboard() {
     const toBeDeleted = productsArray?.find(
       (products) => products._id === productId
     )
-
     if (toBeDeleted) {
       try {
         const deletedId = {
           productId,
         }
-        const response = axios.post(`${apiUrl}/deleteProduct`, deletedId)
+        const response = await axios.post(`${apiUrl}/deleteProduct`, deletedId)
+        if(response) {
+          closeDeleteModal()
+          setProductsArray((prev)=>prev?.filter(product => product._id !== productId))
+        } 
       } catch (error) {
         console.log(error)
       }

@@ -6,6 +6,13 @@ This project, another one for my portfolio, is a mock of the product hunt websit
 # Intro
 Being a mock, it doesn't have all the features that the original website does, but it could be used as a 'products showroom' as well, since it has some of the key features that would allow this project to be functional and used in real-life if needed. The code was written in Typescript. The front-end and back-end were built separately;
 
+# Key Features:
+- The Homepage: It shows a list of the registered products one by one, ordering it by the upvotes (or likes) that it has received from the users (each user can only vote once in an unique product). Each product is shown in a 'card' with it's summarized descriptions, it's tags and the upvote button. When clicked a modal is displayed with the complete description of the product, as well as a link to the product's website. The homepage also has a side div where all tags are listed, so a person can click in an specific tag and go to a page with all of the products that contain that tag;
+- The Dashboard page: The page where the logged in user can see all of the products he has registered in the website. He can also delete the product there. This page is only shown if the user is logged in;
+- The New Product page: A page where the user can register a product. This page is only shown if the user is logged in;
+- The about page: It's a simple page that explains the purpose of the application and the technologies used;
+- The Sign In and Sign Up pages are managed by Clerk;
+
 # Technologies and libraries used:
   # Front-end:
   - **React**: a JavaScript-based UI development library;

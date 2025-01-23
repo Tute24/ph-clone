@@ -21,7 +21,7 @@ export default async function Header (){
                 <div className='font-semibold'>
                 <Link href='/NewProduct'><button type="button" className="p-2 hover:text-orange1">New Product</button></Link>
                 <Link href='/dashboard'><button type="button" className="p-2 hover:text-orange1">Dashboard</button></Link>
-                <button type="button" className='p-2 hover:text-orange1'>About</button>
+                <Link href='/aboutpage'><button type="button" className='p-2 hover:text-orange1'>About</button></Link>
                 </div>
                 <div className=''>
                 <SignedOut>

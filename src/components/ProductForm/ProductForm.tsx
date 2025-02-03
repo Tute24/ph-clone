@@ -79,7 +79,7 @@ export default function ProductForm({
             {isLoading? <ClipLoader color='#FFFFFF' size={25}/>: `Add new product`}
           </button>
         </form>
-        <span className="text-green-600 p-2">{statusMessage}</span>
+        <span className="text-green-600 p-2 font-bold flex justify-center">{statusMessage}</span>
       </div>
     </div>
   )

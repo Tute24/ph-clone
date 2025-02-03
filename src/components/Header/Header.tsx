@@ -16,7 +16,7 @@ export default async function Header (){
                         src="/product-hunt.png"
                         alt="logo"
                       /></button></Link>
-                <input  type="text" className="solid border-gray-100 bg-gray-100 border-2 ml-5 rounded-3xl h-10 text-center" placeholder="Search right here"/>
+                {/* <input  type="text" className="solid border-gray-100 bg-gray-100 border-2 ml-5 rounded-3xl h-10 text-center" placeholder="Search right here"/> */}
                 </div>
                 <div className='font-semibold'>
                 <Link href='/NewProduct'><button type="button" className="p-2 hover:text-orange1">New Product</button></Link>
